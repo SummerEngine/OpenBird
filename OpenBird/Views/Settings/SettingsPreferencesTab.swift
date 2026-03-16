@@ -41,7 +41,7 @@ struct SettingsPreferencesTab: View {
 
                 Toggle("Show window border", isOn: $settings.showWindowBorder)
                 Toggle("Ambient effects", isOn: $settings.showAmbientEffects)
-                    .help("Bubbles in Aquarium and breeze lines in Aviary")
+                    .help("Bubbles in Aquarium and drifting clouds in Bird View")
                 Picker("Backdrop", selection: $settings.sceneBackgroundStyle) {
                     Text("Themed").tag("themed")
                     Text("Night").tag("night")
@@ -96,11 +96,11 @@ struct SettingsPreferencesTab: View {
     }
 
     private var modeDescription: String {
-        switch GameModeID(rawValue: settings.currentGameMode) ?? .fish {
+        switch GameModeID(rawValue: settings.currentGameMode) ?? .bird {
         case .fish:
             return "Aquarium keeps the friends in water, with calmer swim paths and optional bubbles."
         case .bird:
-            return "Aviary gives each repo a bird that perches, hops, and takes a flight loop when a commit lands."
+            return "Bird View gives each repo a bird that perches, hops, and takes a short flight loop when a commit lands."
         case .jam:
             return "Jam layers on top of your current world and is configured from the Jam tab."
         }

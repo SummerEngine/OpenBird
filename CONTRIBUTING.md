@@ -7,7 +7,8 @@ Thanks for wanting to contribute. Here's how to get started.
 1. Fork the repository
 2. Clone your fork
 3. Open `OpenBird.xcodeproj` in Xcode 15+
-4. Build and run (Cmd+R)
+4. Select your personal signing team in `Signing & Capabilities`
+5. Build and run (Cmd+R)
 
 ## Making Changes
 
@@ -15,6 +16,8 @@ Thanks for wanting to contribute. Here's how to get started.
 - Keep commits focused -- one logical change per commit
 - Test your changes by running the app and verifying the aquarium behaves correctly
 - Make sure the project builds without warnings
+- For command-line release builds, prefer an unsigned local build:
+  `xcodebuild -project OpenBird.xcodeproj -scheme OpenBird -configuration Release build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO`
 
 ## Pull Requests
 
@@ -51,7 +54,7 @@ If you want to add a new creature or extend Jam behavior:
 
 - Match existing patterns in the codebase
 - Use Swift conventions (camelCase, etc.)
-- No external dependencies -- keep it pure Swift/SwiftUI/SpriteKit
+- Prefer the existing stack unless there is a clear reason to add more dependencies
 
 ## Reporting Issues
 

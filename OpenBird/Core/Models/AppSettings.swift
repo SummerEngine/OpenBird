@@ -73,7 +73,7 @@ final class AppSettings: ObservableObject {
         let screenWidth = NSScreen.main?.frame.width ?? 1440
         let storedBackground = defaults.string(forKey: "sceneBackgroundStyle")
             ?? defaults.string(forKey: "tankBackground")
-            ?? "ocean"
+            ?? "clear"
         let normalizedBackground: String
         switch storedBackground {
         case "transparent", "clear":
@@ -90,7 +90,7 @@ final class AppSettings: ObservableObject {
         } else if defaults.object(forKey: "showBubbles") != nil {
             ambientEffectsEnabled = defaults.bool(forKey: "showBubbles")
         } else {
-            ambientEffectsEnabled = true
+            ambientEffectsEnabled = false
         }
 
         self.windowX = defaults.object(forKey: "windowX") as? Double ?? Double(screenWidth - 420)
@@ -101,7 +101,7 @@ final class AppSettings: ObservableObject {
         self.hotkeyModifiers = defaults.object(forKey: "hotkeyModifiers") as? UInt32 ?? UInt32(cmdKey | shiftKey)
         self.showOnLaunch = defaults.object(forKey: "showOnLaunch") as? Bool ?? true
         self.enableSounds = defaults.object(forKey: "enableSounds") as? Bool ?? true
-        self.currentGameMode = defaults.string(forKey: "currentGameMode") ?? "fish"
+        self.currentGameMode = defaults.string(forKey: "currentGameMode") ?? GameModeID.bird.rawValue
         self.showCreatureNames = defaults.object(forKey: "showCreatureNames") as? Bool ?? true
         self.movementSpeed = defaults.object(forKey: "movementSpeed") as? Double ?? 1.0
         self.followAcrossSpaces = defaults.object(forKey: "followAcrossSpaces") as? Bool ?? true
@@ -140,7 +140,7 @@ final class AppSettings: ObservableObject {
         jamModeAudioReactiveEnabled = false
 
         if currentGameMode == GameModeID.jam.rawValue {
-            currentGameMode = GameModeID.fish.rawValue
+            currentGameMode = GameModeID.bird.rawValue
         }
     }
 }

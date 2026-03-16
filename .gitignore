@@ -19,6 +19,27 @@ build/
 ## Distribution
 *.dmg
 *.ipa
+*.pkg
+*.xcarchive
+*.xcresult
+*.zip
+release/
+*.conductor
+
+## Secrets and local signing
+.env
+.env.*
+*.env
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+*.provisionprofile
+*ExportOptions.plist
+*.secrets.xcconfig
+*.local.xcconfig
+Secrets.xcconfig
+
 
 ## Swift Package Manager
 .build/

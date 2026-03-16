@@ -1,9 +1,17 @@
 import SpriteKit
 
 final class FishScene: GameModeScene {
+    private let swimPlanner = SceneMotionPlanner(minimumSeparation: 72)
+
+    override func addCreature(_ node: CreatureNode, for repoID: UUID) {
+        rebuildSwimPlanner()
+        super.addCreature(node, for: repoID)
+    }
+
     override func didMove(to view: SKView) {
         backgroundColor = .clear
         setupAmbience()
+        rebuildSwimPlanner()
         startSchoolingCheck()
 
         // Enable mouse events
@@ -13,6 +21,7 @@ final class FishScene: GameModeScene {
 
     override func didChangeSize(_ oldSize: CGSize) {
         super.didChangeSize(oldSize)
+        rebuildSwimPlanner()
         // Reposition creatures, update scale, and restart movement with fresh bounds
         for (_, creature) in creatures {
             creature.position = constrainToScene(creature.position)
@@ -108,6 +117,15 @@ final class FishScene: GameModeScene {
         )
     }
 
+    func reserveSwimPoint(for creature: CreatureNode, near preferredPoint: CGPoint, avoidCurrent: Bool = true) -> CGPoint {
+        swimPlanner.reserveSlot(for: creature, near: preferredPoint, avoidCurrent: avoidCurrent)
+            ?? constrainToScene(preferredPoint)
+    }
+
+    override func releaseMovementReservation(for node: CreatureNode) {
+        swimPlanner.releaseSlot(for: node)
+    }
+
     // MARK: - Fish Schooling
 
     private func startSchoolingCheck() {
@@ -143,5 +161,34 @@ final class FishScene: GameModeScene {
                 }
             }
         }
+    }
+
+    private func rebuildSwimPlanner() {
+        let marginX: CGFloat = 52
+        let marginY: CGFloat = 48
+        let usableWidth = max(1, size.width - marginX * 2)
+        let usableHeight = max(1, size.height - marginY * 2)
+        let columns = max(2, Int((usableWidth / 110).rounded(.down)) + 1)
+        let rows = max(2, Int((usableHeight / 88).rounded(.down)) + 1)
+        let xStep = columns > 1 ? usableWidth / CGFloat(columns - 1) : usableWidth
+        let yStep = rows > 1 ? usableHeight / CGFloat(rows - 1) : usableHeight
+
+        var slots: [CGPoint] = []
+        for row in 0..<rows {
+            let y = marginY + CGFloat(row) * yStep
+            let rowOffset = row.isMultiple(of: 2) ? 0 : min(40, xStep * 0.5)
+
+            for column in 0..<columns {
+                let x = min(size.width - marginX, marginX + CGFloat(column) * xStep + rowOffset)
+                slots.append(CGPoint(x: x, y: y))
+            }
+        }
+
+        swimPlanner.updateSlots(
+            slots,
+            subjects: creatures.values.map { creature in
+                (id: ObjectIdentifier(creature), position: constrainToScene(creature.position))
+            }
+        )
     }
 }

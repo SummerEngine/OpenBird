@@ -43,7 +43,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         SystemAudioMonitorService.shared.checkPermissionStatus()
 
         if AppSettings.shared.currentGameMode == GameModeID.jam.rawValue {
-            AppSettings.shared.currentGameMode = GameModeID.fish.rawValue
+            AppSettings.shared.currentGameMode = GameModeID.bird.rawValue
         }
 
         // Setup tank window
@@ -224,11 +224,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             if let creature = CreatureLifecycleService.shared.creatures[repo.id] {
                 let color = NSColor.fromHex(repo.color)
                 let node = activeMode.createCreatureNode(for: creature, name: repo.creatureName, color: color)
-                let sceneSize = scene.size
-                node.position = CGPoint(
-                    x: CGFloat.random(in: 30...max(31, sceneSize.width - 30)),
-                    y: CGFloat.random(in: 30...max(31, sceneSize.height - 30))
-                )
+                node.position = .zero
                 scene.addCreature(node, for: repo.id)
             }
         }
@@ -239,7 +235,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func activeMode() -> any GameMode {
-        mode(for: GameModeID(rawValue: AppSettings.shared.currentGameMode) ?? .fish)
+        mode(for: GameModeID(rawValue: AppSettings.shared.currentGameMode) ?? .bird)
     }
 
     private func mode(for modeID: GameModeID) -> any GameMode {
@@ -254,8 +250,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func installScene(modeID: String) {
-        let storedMode = GameModeID(rawValue: modeID) ?? .fish
-        let resolvedMode: GameModeID = storedMode == .jam ? .fish : storedMode
+        let storedMode = GameModeID(rawValue: modeID) ?? .bird
+        let resolvedMode: GameModeID = storedMode == .jam ? .bird : storedMode
         let mode = mode(for: resolvedMode)
         let scene = mode.createScene(size: tankWindow.skView.bounds.size)
         wireSceneCallbacks(scene)

@@ -9,6 +9,15 @@ final class BirdScene: GameModeScene {
     private(set) var perchSegments: [BirdPerchSegment] = []
     private var cachedCloudTexture: SKTexture?
     private var cachedCloudSize: CGSize = CGSize(width: 96, height: 42)
+    private let perchPlanner = SceneMotionPlanner(minimumSeparation: 56)
+
+    override func addCreature(_ node: CreatureNode, for repoID: UUID) {
+        if perchSegments.isEmpty {
+            updateBackground()
+            rebuildPerchPlanner()
+        }
+        super.addCreature(node, for: repoID)
+    }
 
     override func didMove(to view: SKView) {
         backgroundColor = .clear
@@ -20,6 +29,7 @@ final class BirdScene: GameModeScene {
 
     override func didChangeSize(_ oldSize: CGSize) {
         super.didChangeSize(oldSize)
+        updateBackground()
 
         for (_, creature) in creatures {
             creature.position = constrainToScene(creature.position)
@@ -34,8 +44,6 @@ final class BirdScene: GameModeScene {
                 creature.startIdleBehavior(in: size)
             }
         }
-
-        updateBackground()
     }
 
     override func updateBackground() {
@@ -45,7 +53,10 @@ final class BirdScene: GameModeScene {
         perchSegments.removeAll()
 
         let style = AppSettings.shared.sceneBackgroundStyle
-        guard style != "clear" else { return }
+        guard style != "clear" else {
+            rebuildPerchPlanner()
+            return
+        }
 
         let backdrop = SKShapeNode(rectOf: CGSize(width: 4000, height: 4000), cornerRadius: 8)
         switch style {
@@ -185,6 +196,7 @@ final class BirdScene: GameModeScene {
         }
 
         addChild(tree)
+        rebuildPerchPlanner()
     }
 
     override func triggerFeedAnimation(for repoID: UUID, commit: CommitRecord) {
@@ -257,7 +269,16 @@ final class BirdScene: GameModeScene {
         ]))
     }
 
-    func randomPerchPoint() -> CGPoint {
+    func reservePerchPoint(
+        for creature: CreatureNode?,
+        near preferredPoint: CGPoint,
+        avoidCurrent: Bool = true
+    ) -> CGPoint {
+        if let creature,
+           let reserved = perchPlanner.reserveSlot(for: creature, near: preferredPoint, avoidCurrent: avoidCurrent) {
+            return reserved
+        }
+
         guard let perch = perchSegments.randomElement() else {
             return CGPoint(x: size.width * 0.55, y: size.height * 0.5)
         }
@@ -265,6 +286,65 @@ final class BirdScene: GameModeScene {
             x: CGFloat.random(in: perch.xRange),
             y: perch.y
         )
+    }
+
+    override func releaseMovementReservation(for node: CreatureNode) {
+        perchPlanner.releaseSlot(for: node)
+    }
+
+    private func rebuildPerchPlanner() {
+        perchPlanner.updateSlots(
+            buildPerchPoints(),
+            subjects: creatures.values.map { creature in
+                (id: ObjectIdentifier(creature), position: constrainToScene(creature.position))
+            }
+        )
+    }
+
+    private func buildPerchPoints() -> [CGPoint] {
+        guard !perchSegments.isEmpty else {
+            let insetX = max(48, size.width * 0.18)
+            let insetRight = max(56, size.width * 0.14)
+            let left = insetX
+            let right = max(left + 80, size.width - insetRight)
+            let rows = [
+                size.height * 0.32,
+                size.height * 0.52,
+                size.height * 0.72
+            ]
+
+            return rows.enumerated().flatMap { index, y in
+                let rowOffset: CGFloat = index.isMultiple(of: 2) ? 0 : 34
+                let startX = min(right - 12, left + rowOffset)
+                let availableWidth = max(1, right - startX)
+                let count = max(2, Int((availableWidth / 96).rounded(.down)) + 1)
+                let step = count > 1 ? availableWidth / CGFloat(count - 1) : availableWidth
+
+                return (0..<count).map { pointIndex in
+                    CGPoint(x: startX + CGFloat(pointIndex) * step, y: y)
+                }
+            }
+        }
+
+        return perchSegments.flatMap { segment in
+            let lowerBound = segment.xRange.lowerBound
+            let upperBound = segment.xRange.upperBound
+            let span = max(0, upperBound - lowerBound)
+
+            guard span > 0 else {
+                return [CGPoint(x: lowerBound, y: segment.y)]
+            }
+
+            let count = max(2, Int((span / 68).rounded(.down)) + 1)
+            let step = count > 1 ? span / CGFloat(count - 1) : span
+
+            return (0..<count).map { index in
+                CGPoint(
+                    x: lowerBound + CGFloat(index) * step,
+                    y: segment.y
+                )
+            }
+        }
     }
 
     private func makeCloud(center: CGPoint, scale: CGFloat, alpha: CGFloat) -> SKNode {

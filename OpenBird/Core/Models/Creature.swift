@@ -1,6 +1,11 @@
 import Foundation
 
 struct Creature: Codable {
+    private static let minutesPerDay = 24.0 * 60.0
+    private static let targetDaysUntilStarving = 7.0
+    private static let deathAfterDaysWithoutFeeding = 30.0
+    private static let hungerPerTick = 1.0 / (targetDaysUntilStarving * minutesPerDay)
+
     var repoID: UUID
     var happiness: Double      // 0.0 - 1.0
     var hunger: Double         // 0.0 (full) - 1.0 (starving)
@@ -40,7 +45,8 @@ struct Creature: Codable {
 
     mutating func feed() {
         guard isAlive else { return }
-        hunger = max(0, hunger - 0.3)
+        // A commit fully feeds the creature; default care should feel weekly, not hourly.
+        hunger = 0.0
         happiness = min(1.0, happiness + 0.2)
         size = min(2.5, size + 0.006)
         totalCommitsFed += 1
@@ -81,28 +87,27 @@ struct Creature: Codable {
     mutating func tick() {
         guard isAlive else { return }
 
-        // Hunger increases ~0.01 per tick (60s) = noticeable in ~2 hours
-        hunger = min(1.0, hunger + 0.008)
+        syncHungerToElapsedTime()
 
         // Happiness decays toward inverse of hunger
         let targetHappiness = 1.0 - hunger * 0.7
-        happiness += (targetHappiness - happiness) * 0.02
+        happiness += (targetHappiness - happiness) * 0.006
 
-        // Size shrinks when hungry - noticeable over a workday
-        if hunger > 0.5 {
-            size = max(0.5, size - 0.002)
+        // Size only starts shrinking once the creature has been hungry for a while.
+        if hunger > 0.75 {
+            size = max(0.5, size - 0.00025)
         }
 
         // Death after 30 days without feeding
         if let lastFed = lastFedDate {
             let daysSinceFed = Date().timeIntervalSince(lastFed) / 86400
-            if daysSinceFed >= 30 {
+            if daysSinceFed >= Self.deathAfterDaysWithoutFeeding {
                 isAlive = false
                 happiness = 0
             }
         } else {
             let daysSinceBirth = Date().timeIntervalSince(birthDate) / 86400
-            if daysSinceBirth >= 30 {
+            if daysSinceBirth >= Self.deathAfterDaysWithoutFeeding {
                 isAlive = false
                 happiness = 0
             }
@@ -116,5 +121,15 @@ struct Creature: Codable {
                 currentStreak = 0
             }
         }
+    }
+
+    mutating func normalizeForCurrentBalance() {
+        syncHungerToElapsedTime()
+    }
+
+    private mutating func syncHungerToElapsedTime(now: Date = Date()) {
+        let referenceDate = lastFedDate ?? birthDate
+        let elapsedMinutes = max(0, now.timeIntervalSince(referenceDate) / 60.0)
+        hunger = min(1.0, elapsedMinutes * Self.hungerPerTick)
     }
 }

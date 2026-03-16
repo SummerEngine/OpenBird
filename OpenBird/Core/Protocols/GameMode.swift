@@ -13,7 +13,7 @@ enum GameModeID: String, CaseIterable, Identifiable {
         case .fish:
             return "Aquarium"
         case .bird:
-            return "Aviary"
+            return "Bird View"
         case .jam:
             return "Jam Mode"
         }
@@ -71,6 +71,9 @@ class GameModeScene: SKScene {
         if selectedCreatureID == repoID {
             selectedCreatureID = nil
         }
+        if let creature = creatures[repoID] {
+            releaseMovementReservation(for: creature)
+        }
         creatures[repoID]?.removeAllActions()
         creatures[repoID]?.removeFromParent()
         creatures[repoID] = nil
@@ -107,6 +110,8 @@ class GameModeScene: SKScene {
     func updateAmbientEffects() {}
 
     func updateBackground() {}
+
+    func releaseMovementReservation(for node: CreatureNode) {}
 
     func spawnCommitReward(at point: CGPoint) {
         let rewardNode = SKNode()

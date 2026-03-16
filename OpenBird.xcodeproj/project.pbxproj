@@ -31,6 +31,7 @@
 		B10000000000000000000001 /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* Quest.swift */; };
 		B10000000000000000000002 /* QuestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* QuestService.swift */; };
 		C10000000000000000000001 /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000002 /* ColorHelper.swift */; };
+		C10000000000000000000003 /* SceneMotionPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000004 /* SceneMotionPlanner.swift */; };
 		D10000000000000000000001 /* BirdMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* BirdMode.swift */; };
 		D10000000000000000000002 /* BirdScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000002 /* BirdScene.swift */; };
 		D10000000000000000000003 /* BirdCreatureNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000003 /* BirdCreatureNode.swift */; };
@@ -43,8 +44,8 @@
 		E10000000000000000000006 /* SettingsRoadmapTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000006 /* SettingsRoadmapTab.swift */; };
 		E10000000000000000000007 /* SettingsAccountTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000007 /* SettingsAccountTab.swift */; };
 		E10000000000000000000008 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000008 /* StatusBarController.swift */; };
-		E1000000000000000000000A /* SettingsJamTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2000000000000000000000A /* SettingsJamTab.swift */; };
 		E10000000000000000000009 /* UpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000009 /* UpdateService.swift */; };
+		E1000000000000000000000A /* SettingsJamTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2000000000000000000000A /* SettingsJamTab.swift */; };
 		F10000000000000000000001 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = F60000000000000000000001 /* Sparkle */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +77,7 @@
 		B10000000000000000000003 /* Quest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quest.swift; sourceTree = "<group>"; };
 		B10000000000000000000004 /* QuestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestService.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
+		C10000000000000000000004 /* SceneMotionPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMotionPlanner.swift; sourceTree = "<group>"; };
 		D20000000000000000000001 /* BirdMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdMode.swift; sourceTree = "<group>"; };
 		D20000000000000000000002 /* BirdScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdScene.swift; sourceTree = "<group>"; };
 		D20000000000000000000003 /* BirdCreatureNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdCreatureNode.swift; sourceTree = "<group>"; };
@@ -88,8 +90,8 @@
 		E20000000000000000000006 /* SettingsRoadmapTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoadmapTab.swift; sourceTree = "<group>"; };
 		E20000000000000000000007 /* SettingsAccountTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountTab.swift; sourceTree = "<group>"; };
 		E20000000000000000000008 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
-		E2000000000000000000000A /* SettingsJamTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsJamTab.swift; sourceTree = "<group>"; };
 		E20000000000000000000009 /* UpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateService.swift; sourceTree = "<group>"; };
+		E2000000000000000000000A /* SettingsJamTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsJamTab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +213,7 @@
 			children = (
 				A20000000000000000000013 /* GitHelper.swift */,
 				C10000000000000000000002 /* ColorHelper.swift */,
+				C10000000000000000000004 /* SceneMotionPlanner.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				B10000000000000000000001 /* Quest.swift in Sources */,
 				B10000000000000000000002 /* QuestService.swift in Sources */,
 				C10000000000000000000001 /* ColorHelper.swift in Sources */,
+				C10000000000000000000003 /* SceneMotionPlanner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,7 +429,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = FXK7AXT3WH;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -490,7 +493,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = FXK7AXT3WH;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -518,13 +520,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenBird/OpenBird.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = FXK7AXT3WH;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenBird/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = "";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -547,13 +552,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenBird/OpenBird.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = FXK7AXT3WH;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenBird/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = "";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -571,6 +579,27 @@
 		};
 /* End XCBuildConfiguration section */
 
+/* Begin XCConfigurationList section */
+		A70000000000000000000001 /* Build configuration list for PBXProject "OpenBird" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000004 /* Debug */,
+				A70000000000000000000005 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A70000000000000000000003 /* Build configuration list for PBXNativeTarget "OpenBird" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000006 /* Debug */,
+				A70000000000000000000007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		F50000000000000000000001 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -581,27 +610,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCConfigurationList section */
-		A70000000000000000000001 /* Build configuration list for PBXProject "OpenBird" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A70000000000000000000004 /* Debug */,
-				A70000000000000000000005 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A70000000000000000000003 /* Build configuration list for PBXNativeTarget "OpenBird" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A70000000000000000000006 /* Debug */,
-				A70000000000000000000007 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-/* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		F60000000000000000000001 /* Sparkle */ = {

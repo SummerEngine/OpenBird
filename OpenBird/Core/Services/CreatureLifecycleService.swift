@@ -13,7 +13,12 @@ final class CreatureLifecycleService: ObservableObject {
     private init() {}
 
     func start() {
-        creatures = PersistenceService.shared.loadCreatures()
+        creatures = PersistenceService.shared.loadCreatures().mapValues { creature in
+            var normalized = creature
+            normalized.normalizeForCurrentBalance()
+            return normalized
+        }
+        saveCreatures()
 
         // Tick every 60 seconds for hunger decay
         timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in

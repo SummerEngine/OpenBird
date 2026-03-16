@@ -204,6 +204,9 @@ final class FishCreatureNode: CreatureNode {
             return
         }
 
+        if position == .zero {
+            position = reservedSwimPoint(in: sceneSize, avoidCurrent: false)
+        }
         swimToRandomPoint(in: sceneSize)
     }
 
@@ -256,13 +259,7 @@ final class FishCreatureNode: CreatureNode {
         guard creatureState.isAlive else { return }
 
         let currentSize = scene?.size ?? sceneSize
-        let margin: CGFloat = 40
-        let maxX = max(margin + 1, currentSize.width - margin)
-        let maxY = max(margin + 1, currentSize.height - margin)
-        let target = CGPoint(
-            x: CGFloat.random(in: margin...maxX),
-            y: CGFloat.random(in: margin...maxY)
-        )
+        let target = reservedSwimPoint(in: currentSize)
 
         let goingRight = target.x > position.x
         if goingRight != facingRight {
@@ -507,5 +504,26 @@ final class FishCreatureNode: CreatureNode {
             SKAction.wait(forDuration: min(duration, 2.2) + 0.3),
             resume
         ]), withKey: "swimLoop")
+    }
+
+    private func reservedSwimPoint(in sceneSize: CGSize, avoidCurrent: Bool = true) -> CGPoint {
+        if let fishScene = scene as? FishScene {
+            let preferredPoint = position == .zero
+                ? CGPoint(x: sceneSize.width * 0.5, y: sceneSize.height * 0.5)
+                : position
+            return fishScene.reserveSwimPoint(
+                for: self,
+                near: preferredPoint,
+                avoidCurrent: avoidCurrent
+            )
+        }
+
+        let margin: CGFloat = 40
+        let maxX = max(margin + 1, sceneSize.width - margin)
+        let maxY = max(margin + 1, sceneSize.height - margin)
+        return CGPoint(
+            x: CGFloat.random(in: margin...maxX),
+            y: CGFloat.random(in: margin...maxY)
+        )
     }
 }

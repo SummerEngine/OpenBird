@@ -144,7 +144,7 @@ final class BirdCreatureNode: CreatureNode {
         alpha = 1.0
         zRotation = 0
         if position == .zero {
-            position = randomPerch(in: sceneSize)
+            position = reservedPerch(in: sceneSize, avoidCurrent: false)
         }
         setPose(.idle)
         planNextMove(in: sceneSize)
@@ -210,7 +210,7 @@ final class BirdCreatureNode: CreatureNode {
 
         cancelMovement()
 
-        let landing = randomPerch(in: scene.size)
+        let landing = reservedPerch(in: scene.size)
         let points = [
             CGPoint(x: min(scene.size.width - 36, position.x + 60), y: min(scene.size.height - 28, position.y + 70)),
             CGPoint(x: scene.size.width * 0.45, y: scene.size.height * 0.84),
@@ -265,11 +265,11 @@ final class BirdCreatureNode: CreatureNode {
         if roll < 0.82 + creatureState.happiness * 0.12 {
             perchBriefly(in: sceneSize)
         } else if roll < 0.97 {
-            runHop(to: randomPerch(in: sceneSize), key: "swimming") { [weak self] in
+            runHop(to: reservedPerch(in: sceneSize), key: "swimming") { [weak self] in
                 self?.planNextMove(in: sceneSize)
             }
         } else {
-            runFlight(through: [randomPerch(in: sceneSize)], lift: 30, baseDuration: 1.15, key: "swimming") { [weak self] in
+            runFlight(through: [reservedPerch(in: sceneSize)], lift: 30, baseDuration: 1.15, key: "swimming") { [weak self] in
                 self?.planNextMove(in: sceneSize)
             }
         }
@@ -277,10 +277,7 @@ final class BirdCreatureNode: CreatureNode {
 
     private func perchBriefly(in sceneSize: CGSize) {
         setPose(.idle)
-        let bobUp = SKAction.moveBy(x: 0, y: 1.1, duration: 0.28)
-        bobUp.timingMode = .easeInEaseOut
-        let bob = SKAction.repeatForever(SKAction.sequence([bobUp, bobUp.reversed()]))
-        run(bob, withKey: "hovering")
+        removeAction(forKey: "hovering")
 
         let wait = SKAction.wait(forDuration: Double.random(in: 4.0...8.0))
         let resume = SKAction.run { [weak self] in
@@ -395,11 +392,6 @@ final class BirdCreatureNode: CreatureNode {
     private func startIdleAnimation() {
         idleContainer.removeAction(forKey: "idleFloat")
         idleContainer.zRotation = 0
-        let driftOut = SKAction.moveBy(x: 0, y: 0.8, duration: 2.4)
-        driftOut.timingMode = .easeInEaseOut
-        let driftBack = SKAction.moveBy(x: 0, y: -0.8, duration: 2.4)
-        driftBack.timingMode = .easeInEaseOut
-        idleContainer.run(SKAction.repeatForever(SKAction.sequence([driftOut, driftBack])), withKey: "idleFloat")
 
         animateIdleNode(named: "idleLeftWingContainer", startAngle: 0, endAngle: -0.21, key: "idleSway", duration: 1.5)
         animateIdleNode(named: "idleRightWingContainer", startAngle: 0, endAngle: 0.21, key: "idleSway", duration: 1.5)
@@ -526,9 +518,13 @@ final class BirdCreatureNode: CreatureNode {
         updateAppearance(creatureState)
     }
 
-    private func randomPerch(in sceneSize: CGSize) -> CGPoint {
+    private func reservedPerch(in sceneSize: CGSize, avoidCurrent: Bool = true) -> CGPoint {
         if let birdScene = scene as? BirdScene {
-            return birdScene.randomPerchPoint()
+            return birdScene.reservePerchPoint(
+                for: self,
+                near: clamp(position == .zero ? CGPoint(x: sceneSize.width * 0.55, y: sceneSize.height * 0.5) : position, in: sceneSize),
+                avoidCurrent: avoidCurrent
+            )
         }
 
         let size = scene?.size ?? sceneSize

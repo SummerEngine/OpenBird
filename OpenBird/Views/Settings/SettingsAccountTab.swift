@@ -6,19 +6,19 @@ struct SettingsAccountTab: View {
             VStack(alignment: .leading, spacing: 18) {
                 header
                 accountCard(
-                    title: "Accounts are for web sync and sharing later",
-                    subtitle: "This area is reserved for hosted features like saving your tank or sharing your setup on the website."
+                    title: "Accounts may unlock optional sync and sharing later",
+                    subtitle: "OpenBird works fully without an account today. This area is reserved for optional web features if they ship."
                 ) {
                     VStack(alignment: .leading, spacing: 12) {
                         featureRow(
                             icon: "icloud",
-                            title: "Save your tank to the web",
-                            detail: "Use the same tank and layout across devices once hosted sync is ready."
+                            title: "Sync your setup",
+                            detail: "Use the same tank and layout across devices if optional sync ships in the future."
                         )
                         featureRow(
                             icon: "square.and.arrow.up",
-                            title: "Share your window setup",
-                            detail: "Publish or share your tank state from the hosted website when that ships."
+                            title: "Share your setup",
+                            detail: "Publish or share your tank state if OpenBird gets optional web features later on."
                         )
                         featureRow(
                             icon: "waveform",
@@ -26,7 +26,7 @@ struct SettingsAccountTab: View {
                             detail: "Jam Mode is now a local feature and is configured from the Jam tab."
                         )
 
-                        Text("This section is intentionally lightweight right now so it does not conflict with future backend-auth work.")
+                        Text("This section stays lightweight for now while these ideas remain future-facing.")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -41,7 +41,7 @@ struct SettingsAccountTab: View {
             Label("Account", systemImage: "person.crop.circle")
                 .font(.title2.weight(.semibold))
 
-            Text("Accounts are for future hosted features, not for turning on local Jam Mode.")
+            Text("Accounts are optional future-facing features, not a requirement for local OpenBird features like Jam Mode.")
                 .font(.callout)
                 .foregroundColor(.secondary)
         }

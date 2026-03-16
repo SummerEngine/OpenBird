@@ -8,7 +8,7 @@ struct SettingsRoadmapTab: View {
                     .font(.headline)
                     .padding(.bottom, 4)
 
-                ideaRow("bird", "More Worlds", "Expand beyond aquarium and aviary into new habitats with their own art, behaviors, and commit reactions.")
+                ideaRow("bird", "More Worlds", "Expand beyond Aquarium and Bird View into new habitats with their own art, behaviors, and commit reactions.")
                 ideaRow("waveform.path.ecg", "Jam Packs", "Different dance floors, glow rigs, and animation styles for Jam Mode.")
                 ideaRow("cursorarrow.click.2", "Click Actions", "Bind what happens when you click a friend. Open a URL, launch your editor to the latest commit, open Claude Code.")
                 ideaRow("message", "Talk to Your Friends", "Send messages to friends via MCP. They relay prompts to Cursor, Claude Code, or any connected agent.")

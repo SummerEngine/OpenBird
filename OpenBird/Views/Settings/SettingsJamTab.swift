@@ -64,7 +64,7 @@ struct SettingsJamTab: View {
                 detailRow(
                     icon: "sparkles",
                     title: "Current world stays the same",
-                    detail: "Jam layers on top of Aquarium or Aviary. It does not swap in a different creature type."
+                    detail: "Jam layers on top of Aquarium or Bird View. It does not swap in a different creature type."
                 )
                 detailRow(
                     icon: "person.3",
@@ -150,11 +150,11 @@ struct SettingsJamTab: View {
     }
 
     private var activeWorldDescription: String {
-        switch GameModeID(rawValue: settings.currentGameMode) ?? .fish {
+        switch GameModeID(rawValue: settings.currentGameMode) ?? .bird {
         case .fish, .jam:
             return "Active world: Aquarium"
         case .bird:
-            return "Active world: Aviary"
+            return "Active world: Bird View"
         }
     }
 

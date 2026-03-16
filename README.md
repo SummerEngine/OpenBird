@@ -55,12 +55,12 @@ cd OpenBird
 open OpenBird.xcodeproj
 ```
 
-In Xcode, select your signing team under **Signing & Capabilities**, then hit **Cmd+R** to build and run.
+In Xcode, select your personal signing team under **Signing & Capabilities**, then hit **Cmd+R** to build and run.
 
-To create a release build:
+To create an unsigned local release build:
 
 ```bash
-xcodebuild -project OpenBird.xcodeproj -scheme OpenBird -configuration Release build
+xcodebuild -project OpenBird.xcodeproj -scheme OpenBird -configuration Release build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 ```
 
 ### Project Structure
@@ -110,7 +110,7 @@ All data is stored locally in `~/Library/Application Support/OpenBird/`:
 - `quests.json` -- quest progress
 - `commits/*.json` -- per-repo commit history (last 500 per repo)
 
-No accounts, no cloud, no telemetry.
+OpenBird is local-first today. Any future account or sharing ideas shown in the app are optional roadmap items, not requirements for core use.
 
 ## Tech Stack
 
@@ -118,7 +118,7 @@ No accounts, no cloud, no telemetry.
 - **SpriteKit** -- creature rendering and animation
 - **FSEvents** -- native macOS file system watching for git changes
 - **Carbon** -- global keyboard shortcut registration
-- Zero external dependencies
+- **Sparkle** -- macOS update framework for signed release builds
 
 ## Contributing
 
@@ -127,3 +127,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for setup instructions and guidelines.
 ## License
 
 [MIT](LICENSE) -- Copyright (c) 2026 Summer Engine - The AI Game Engine
+
+Third-party dependency notices live in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
