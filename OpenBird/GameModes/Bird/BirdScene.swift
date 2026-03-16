@@ -7,6 +7,8 @@ struct BirdPerchSegment {
 
 final class BirdScene: GameModeScene {
     private(set) var perchSegments: [BirdPerchSegment] = []
+    private var cachedCloudTexture: SKTexture?
+    private var cachedCloudSize: CGSize = CGSize(width: 96, height: 42)
 
     override func didMove(to view: SKView) {
         backgroundColor = .clear
@@ -196,12 +198,12 @@ final class BirdScene: GameModeScene {
 
     override func updateAmbientEffects() {
         if AppSettings.shared.showAmbientEffects {
-            if action(forKey: "breezeSpawner") == nil {
-                spawnBreeze()
+            if action(forKey: "cloudSpawner") == nil {
+                spawnAmbientClouds()
             }
         } else {
-            removeAction(forKey: "breezeSpawner")
-            children.filter { $0.name == "breeze" }.forEach { $0.removeFromParent() }
+            removeAction(forKey: "cloudSpawner")
+            children.filter { $0.name == "ambientCloud" }.forEach { $0.removeFromParent() }
         }
     }
 
@@ -213,34 +215,42 @@ final class BirdScene: GameModeScene {
         )
     }
 
-    private func spawnBreeze() {
+    private func spawnAmbientClouds() {
         let spawn = SKAction.run { [weak self] in
-            self?.createBreeze()
+            self?.createAmbientCloud()
         }
-        let wait = SKAction.wait(forDuration: 5.2, withRange: 2.6)
-        run(SKAction.repeatForever(SKAction.sequence([spawn, wait])), withKey: "breezeSpawner")
+        let wait = SKAction.wait(forDuration: 13.0, withRange: 6.0)
+        run(SKAction.repeatForever(SKAction.sequence([spawn, wait])), withKey: "cloudSpawner")
     }
 
-    private func createBreeze() {
-        let length = CGFloat.random(in: 18...42)
-        let breeze = SKShapeNode(rectOf: CGSize(width: length, height: 1.5), cornerRadius: 0.75)
-        breeze.fillColor = NSColor(white: 1.0, alpha: 0.14)
-        breeze.strokeColor = .clear
-        breeze.position = CGPoint(
-            x: -length,
-            y: CGFloat.random(in: max(32, size.height * 0.25)...max(40, size.height - 28))
+    private func createAmbientCloud() {
+        guard children.filter({ $0.name == "ambientCloud" }).count < 2 else { return }
+
+        let scale = CGFloat.random(in: 0.42...0.72)
+        let cloud = makeCloud(
+            center: .zero,
+            scale: scale,
+            alpha: CGFloat.random(in: 0.1...0.18)
         )
-        breeze.zPosition = -6
-        breeze.alpha = 0
-        breeze.name = "breeze"
-        addChild(breeze)
+        cloud.position = CGPoint(
+            x: -70 * scale,
+            y: CGFloat.random(in: max(52, size.height * 0.58)...max(72, size.height - 44))
+        )
+        cloud.zPosition = -10
+        cloud.alpha = 0
+        cloud.name = "ambientCloud"
+        addChild(cloud)
 
-        let move = SKAction.moveBy(x: size.width + length * 2, y: CGFloat.random(in: -8...8), duration: Double.random(in: 6...9))
+        let move = SKAction.moveBy(
+            x: size.width + 140 * scale,
+            y: CGFloat.random(in: -6...6),
+            duration: Double.random(in: 18...28)
+        )
         move.timingMode = .easeInEaseOut
-        let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 0.5)
-        let fadeOut = SKAction.fadeOut(withDuration: 0.8)
+        let fadeIn = SKAction.fadeAlpha(to: CGFloat.random(in: 0.75...1.0), duration: 2.2)
+        let fadeOut = SKAction.fadeOut(withDuration: 2.8)
 
-        breeze.run(SKAction.sequence([
+        cloud.run(SKAction.sequence([
             fadeIn,
             move,
             fadeOut,
@@ -259,26 +269,47 @@ final class BirdScene: GameModeScene {
     }
 
     private func makeCloud(center: CGPoint, scale: CGFloat, alpha: CGFloat) -> SKNode {
-        let cloud = SKNode()
+        let baseTexture = cloudTexture()
+        let cloud = SKSpriteNode(texture: baseTexture)
+        cloud.size = cachedCloudSize
+        cloud.position = center
+        cloud.alpha = alpha
+        cloud.setScale(scale)
+        return cloud
+    }
+
+    private func cloudTexture() -> SKTexture? {
+        if let cachedCloudTexture {
+            return cachedCloudTexture
+        }
+
+        guard let view else { return nil }
+
+        let cloudTemplate = SKNode()
         let puffSizes = [
-            CGSize(width: 54 * scale, height: 24 * scale),
-            CGSize(width: 36 * scale, height: 20 * scale),
-            CGSize(width: 40 * scale, height: 18 * scale)
+            CGSize(width: 62, height: 28),
+            CGSize(width: 38, height: 24),
+            CGSize(width: 42, height: 22),
+            CGSize(width: 28, height: 16)
         ]
         let puffOffsets = [
             CGPoint(x: 0, y: 0),
-            CGPoint(x: -20 * scale, y: -2 * scale),
-            CGPoint(x: 20 * scale, y: -3 * scale)
+            CGPoint(x: -24, y: -1),
+            CGPoint(x: 24, y: -3),
+            CGPoint(x: 8, y: 7)
         ]
 
         for (puffSize, offset) in zip(puffSizes, puffOffsets) {
             let puff = SKShapeNode(ellipseOf: puffSize)
-            puff.fillColor = NSColor(white: 1.0, alpha: alpha)
+            puff.fillColor = .white
             puff.strokeColor = .clear
-            puff.position = CGPoint(x: center.x + offset.x, y: center.y + offset.y)
-            cloud.addChild(puff)
+            puff.position = offset
+            cloudTemplate.addChild(puff)
         }
 
-        return cloud
+        let frame = cloudTemplate.calculateAccumulatedFrame().insetBy(dx: -4, dy: -4)
+        cachedCloudSize = frame.size
+        cachedCloudTexture = view.texture(from: cloudTemplate, crop: frame)
+        return cachedCloudTexture
     }
 }
