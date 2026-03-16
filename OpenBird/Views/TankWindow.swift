@@ -6,6 +6,7 @@ import SpriteKit
 final class TankSKView: SKView {
     private var hoverTrackingArea: NSTrackingArea?
     private var isHovering = false
+    private var isPressing = false
 
     override func updateTrackingAreas() {
         super.updateTrackingAreas()
@@ -14,7 +15,7 @@ final class TankSKView: SKView {
         }
         hoverTrackingArea = NSTrackingArea(
             rect: bounds,
-            options: [.mouseEnteredAndExited, .activeAlways],
+            options: [.mouseEnteredAndExited, .inVisibleRect, .activeAlways],
             owner: self,
             userInfo: nil
         )
@@ -32,15 +33,23 @@ final class TankSKView: SKView {
     }
 
     override func mouseDown(with event: NSEvent) {
+        isHovering = true
+        isPressing = true
+        refreshChrome()
         // Forward to scene so SpriteKit handles clicks
         scene?.mouseDown(with: event)
     }
 
     override func mouseUp(with event: NSEvent) {
+        isPressing = false
+        refreshChrome()
         scene?.mouseUp(with: event)
     }
 
     override func mouseDragged(with event: NSEvent) {
+        isHovering = true
+        isPressing = true
+        refreshChrome()
         // Drag the window
         window?.performDrag(with: event)
     }
@@ -52,15 +61,24 @@ final class TankSKView: SKView {
     func refreshChrome() {
         wantsLayer = true
         layer?.cornerRadius = 8
+        layer?.masksToBounds = false
 
-        guard AppSettings.shared.showWindowBorder else {
+        let keepVisible = AppSettings.shared.showWindowBorder || isHovering || isPressing
+        guard keepVisible else {
             layer?.borderColor = NSColor.clear.cgColor
             layer?.borderWidth = 0
             return
         }
 
-        let alpha: CGFloat = isHovering ? 0.38 : 0.1
-        let width: CGFloat = isHovering ? 1.5 : 1.0
+        let alpha: CGFloat
+        let width: CGFloat
+        if AppSettings.shared.showWindowBorder {
+            alpha = isPressing ? 0.42 : (isHovering ? 0.3 : 0.1)
+            width = isPressing ? 1.8 : (isHovering ? 1.4 : 1.0)
+        } else {
+            alpha = isPressing ? 0.4 : 0.24
+            width = isPressing ? 1.8 : 1.25
+        }
         layer?.borderColor = NSColor(white: 1.0, alpha: alpha).cgColor
         layer?.borderWidth = width
     }
@@ -72,6 +90,9 @@ final class TankWindow: NSPanel {
     let skView: TankSKView
     private var moveObserver: NSObjectProtocol?
     private var resizeObserver: NSObjectProtocol?
+
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { true }
 
     init() {
         skView = TankSKView()
@@ -107,7 +128,7 @@ final class TankWindow: NSPanel {
 
         // SpriteKit view setup
         skView.allowsTransparency = true
-        skView.preferredFramesPerSecond = 30
+        skView.preferredFramesPerSecond = 60
         skView.frame = NSRect(origin: .zero, size: frame.size)
         skView.autoresizingMask = [.width, .height]
         contentView = skView

@@ -95,9 +95,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         AppSettings.shared.$showCreatureNames
             .dropFirst()
             .sink { [weak self] _ in
-                guard let scene = self?.currentScene else { return }
-                for (_, node) in scene.creatures {
-                    node.updateNameVisibility()
+                DispatchQueue.main.async {
+                    guard let scene = self?.currentScene else { return }
+                    for (_, node) in scene.creatures {
+                        node.updateNameVisibility()
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -112,20 +114,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         AppSettings.shared.$followAcrossSpaces
             .dropFirst()
             .sink { [weak self] _ in
-                self?.tankWindow.updateSpacesBehavior()
+                DispatchQueue.main.async {
+                    self?.tankWindow.updateSpacesBehavior()
+                }
             }
             .store(in: &cancellables)
 
         AppSettings.shared.$movementSpeed
             .dropFirst()
             .sink { [weak self] _ in
-                guard let scene = self?.currentScene else { return }
-                for (_, node) in scene.creatures {
-                    node.removeAction(forKey: "swimming")
-                    node.removeAction(forKey: "swimLoop")
-                    node.removeAction(forKey: "hovering")
-                    node.removeAction(forKey: "hoverTimer")
-                    node.startIdleBehavior(in: scene.size)
+                DispatchQueue.main.async {
+                    guard let scene = self?.currentScene else { return }
+                    for (_, node) in scene.creatures {
+                        node.removeAction(forKey: "swimming")
+                        node.removeAction(forKey: "swimLoop")
+                        node.removeAction(forKey: "hovering")
+                        node.removeAction(forKey: "hoverTimer")
+                        node.startIdleBehavior(in: scene.size)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -133,21 +139,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         AppSettings.shared.$showAmbientEffects
             .dropFirst()
             .sink { [weak self] _ in
-                self?.currentScene?.updateAmbientEffects()
+                DispatchQueue.main.async {
+                    self?.currentScene?.updateAmbientEffects()
+                }
             }
             .store(in: &cancellables)
 
         AppSettings.shared.$sceneBackgroundStyle
             .dropFirst()
             .sink { [weak self] _ in
-                self?.currentScene?.updateBackground()
+                DispatchQueue.main.async {
+                    self?.currentScene?.updateBackground()
+                }
             }
             .store(in: &cancellables)
 
         AppSettings.shared.$showWindowBorder
             .dropFirst()
             .sink { [weak self] _ in
-                self?.tankWindow.updateChrome()
+                DispatchQueue.main.async {
+                    self?.tankWindow.updateChrome()
+                }
             }
             .store(in: &cancellables)
 
@@ -165,8 +177,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Reactive Scene Sync
 
-    private func syncCreaturesWithRepos(_ repos: [Repository]) {
+    private func syncCreaturesWithRepos(_ repos: [Repository], mode: (any GameMode)? = nil) {
         guard let scene = currentScene else { return }
+        let activeMode = mode ?? self.activeMode()
 
         let repoIDs = Set(repos.map { $0.id })
         let sceneIDs = Set(scene.creatures.keys)
@@ -174,7 +187,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         for repo in repos where !sceneIDs.contains(repo.id) {
             if let creature = CreatureLifecycleService.shared.creatures[repo.id] {
                 let color = NSColor.fromHex(repo.color)
-                let node = activeMode().createCreatureNode(for: creature, name: repo.creatureName, color: color)
+                let node = activeMode.createCreatureNode(for: creature, name: repo.creatureName, color: color)
                 let sceneSize = scene.size
                 node.position = CGPoint(
                     x: CGFloat.random(in: 30...max(31, sceneSize.width - 30)),
@@ -190,7 +203,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func activeMode() -> any GameMode {
-        switch GameModeID(rawValue: AppSettings.shared.currentGameMode) ?? .fish {
+        mode(for: GameModeID(rawValue: AppSettings.shared.currentGameMode) ?? .fish)
+    }
+
+    private func mode(for modeID: GameModeID) -> any GameMode {
+        switch modeID {
         case .fish:
             return fishMode
         case .bird:
@@ -200,25 +217,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func installScene(modeID: String) {
         let resolvedMode = GameModeID(rawValue: modeID) ?? .fish
-        let scene = activeScene(for: resolvedMode)
+        let mode = mode(for: resolvedMode)
+        let scene = mode.createScene(size: tankWindow.skView.bounds.size)
         wireSceneCallbacks(scene)
         tankWindow.presentScene(scene)
         currentScene = scene
-        syncCreaturesWithRepos(GitMonitorService.shared.repositories)
+        syncCreaturesWithRepos(GitMonitorService.shared.repositories, mode: mode)
         scene.updateBackground()
         scene.updateAmbientEffects()
 
         if !tankWindow.isVisible {
             tankWindow.skView.isPaused = true
-        }
-    }
-
-    private func activeScene(for modeID: GameModeID) -> GameModeScene {
-        switch modeID {
-        case .fish:
-            return fishMode.createScene(size: tankWindow.skView.bounds.size)
-        case .bird:
-            return birdMode.createScene(size: tankWindow.skView.bounds.size)
         }
     }
 

@@ -44,10 +44,10 @@ final class FishCreatureNode: CreatureNode {
 
         let bodyPath = CGMutablePath()
         bodyPath.move(to: CGPoint(x: -18, y: 0))
-        bodyPath.addQuadCurve(to: CGPoint(x: 14, y: 9), control: CGPoint(x: -1, y: 16))
-        bodyPath.addQuadCurve(to: CGPoint(x: 22, y: 0), control: CGPoint(x: 23, y: 7))
-        bodyPath.addQuadCurve(to: CGPoint(x: 14, y: -9), control: CGPoint(x: 23, y: -7))
-        bodyPath.addQuadCurve(to: CGPoint(x: -18, y: 0), control: CGPoint(x: -1, y: -16))
+        bodyPath.addQuadCurve(to: CGPoint(x: 13, y: 8.5), control: CGPoint(x: -2, y: 14))
+        bodyPath.addQuadCurve(to: CGPoint(x: 21, y: 0), control: CGPoint(x: 24, y: 6))
+        bodyPath.addQuadCurve(to: CGPoint(x: 13, y: -8.5), control: CGPoint(x: 24, y: -6))
+        bodyPath.addQuadCurve(to: CGPoint(x: -18, y: 0), control: CGPoint(x: -2, y: -14))
 
         let body = SKShapeNode(path: bodyPath)
         body.strokeColor = NSColor(white: 1.0, alpha: 0.3)
@@ -58,8 +58,9 @@ final class FishCreatureNode: CreatureNode {
 
         let tailPath = CGMutablePath()
         tailPath.move(to: CGPoint(x: -18, y: 0))
-        tailPath.addLine(to: CGPoint(x: -32, y: 10))
-        tailPath.addQuadCurve(to: CGPoint(x: -32, y: -10), control: CGPoint(x: -27, y: 0))
+        tailPath.addLine(to: CGPoint(x: -30, y: 9))
+        tailPath.addLine(to: CGPoint(x: -24, y: 0))
+        tailPath.addLine(to: CGPoint(x: -30, y: -9))
         tailPath.closeSubpath()
 
         let tail = SKShapeNode(path: tailPath)
@@ -69,9 +70,9 @@ final class FishCreatureNode: CreatureNode {
         addChild(tail)
 
         let dorsalFinPath = CGMutablePath()
-        dorsalFinPath.move(to: CGPoint(x: -4, y: 7))
-        dorsalFinPath.addLine(to: CGPoint(x: 4, y: 15))
-        dorsalFinPath.addLine(to: CGPoint(x: 10, y: 6))
+        dorsalFinPath.move(to: CGPoint(x: -5, y: 6))
+        dorsalFinPath.addQuadCurve(to: CGPoint(x: 5, y: 12), control: CGPoint(x: -1, y: 14))
+        dorsalFinPath.addQuadCurve(to: CGPoint(x: 10, y: 5), control: CGPoint(x: 10, y: 11))
         dorsalFinPath.closeSubpath()
 
         let dorsalFin = SKShapeNode(path: dorsalFinPath)
@@ -81,9 +82,9 @@ final class FishCreatureNode: CreatureNode {
         addChild(dorsalFin)
 
         let bellyFinPath = CGMutablePath()
-        bellyFinPath.move(to: CGPoint(x: -1, y: -4))
-        bellyFinPath.addLine(to: CGPoint(x: 7, y: -13))
-        bellyFinPath.addLine(to: CGPoint(x: 10, y: -3))
+        bellyFinPath.move(to: CGPoint(x: 0, y: -4))
+        bellyFinPath.addQuadCurve(to: CGPoint(x: 8, y: -11), control: CGPoint(x: 5, y: -12))
+        bellyFinPath.addQuadCurve(to: CGPoint(x: 10, y: -3), control: CGPoint(x: 11, y: -9))
         bellyFinPath.closeSubpath()
 
         let bellyFin = SKShapeNode(path: bellyFinPath)

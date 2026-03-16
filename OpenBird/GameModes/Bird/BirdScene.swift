@@ -1,6 +1,13 @@
 import SpriteKit
 
+struct BirdPerchSegment {
+    let xRange: ClosedRange<CGFloat>
+    let y: CGFloat
+}
+
 final class BirdScene: GameModeScene {
+    private(set) var perchSegments: [BirdPerchSegment] = []
+
     override func didMove(to view: SKView) {
         backgroundColor = .clear
         updateBackground()
@@ -27,8 +34,9 @@ final class BirdScene: GameModeScene {
 
     override func updateBackground() {
         childNode(withName: "backdrop")?.removeFromParent()
-        childNode(withName: "sunDisc")?.removeFromParent()
-        childNode(withName: "perches")?.removeFromParent()
+        childNode(withName: "clouds")?.removeFromParent()
+        childNode(withName: "tree")?.removeFromParent()
+        perchSegments.removeAll()
 
         let style = AppSettings.shared.sceneBackgroundStyle
         guard style != "clear" else { return }
@@ -46,36 +54,100 @@ final class BirdScene: GameModeScene {
         backdrop.name = "backdrop"
         addChild(backdrop)
 
-        let sun = SKShapeNode(circleOfRadius: style == "night" ? 18 : 24)
-        sun.fillColor = style == "night"
-            ? NSColor(calibratedRed: 0.96, green: 0.9, blue: 0.72, alpha: 0.16)
-            : NSColor(calibratedRed: 1.0, green: 0.95, blue: 0.72, alpha: 0.2)
-        sun.strokeColor = .clear
-        sun.position = CGPoint(x: size.width - 48, y: size.height - 40)
-        sun.zPosition = -11
-        sun.name = "sunDisc"
-        addChild(sun)
+        let cloudLayer = SKNode()
+        cloudLayer.name = "clouds"
+        cloudLayer.zPosition = -11
 
-        let perchGroup = SKNode()
-        perchGroup.name = "perches"
-        perchGroup.zPosition = -4
+        let cloudConfigs: [(CGPoint, CGFloat)] = [
+            (CGPoint(x: size.width * 0.7, y: size.height * 0.84), 0.9),
+            (CGPoint(x: size.width * 0.46, y: size.height * 0.7), 0.7)
+        ]
+        let cloudAlpha: CGFloat = style == "night" ? 0.12 : 0.22
+        for (center, scale) in cloudConfigs {
+            let cloud = makeCloud(center: center, scale: scale, alpha: cloudAlpha)
+            cloudLayer.addChild(cloud)
+        }
+        addChild(cloudLayer)
 
-        let yLevels: [CGFloat] = [0.24, 0.48, 0.72]
-        let widths: [CGFloat] = [0.42, 0.36, 0.3]
-        let offsets: [CGFloat] = [0.28, 0.68, 0.45]
+        let tree = SKNode()
+        tree.name = "tree"
+        tree.zPosition = -4
 
-        for index in 0..<yLevels.count {
-            let width = max(80, size.width * widths[index])
-            let branch = SKShapeNode(rectOf: CGSize(width: width, height: 4), cornerRadius: 2)
-            branch.fillColor = style == "night"
-                ? NSColor(calibratedRed: 0.36, green: 0.26, blue: 0.22, alpha: 0.42)
-                : NSColor(calibratedRed: 0.45, green: 0.31, blue: 0.18, alpha: 0.32)
-            branch.strokeColor = .clear
-            branch.position = CGPoint(x: size.width * offsets[index], y: size.height * yLevels[index])
-            perchGroup.addChild(branch)
+        let trunkWidth = max(24, size.width * 0.075)
+        let trunkHeight = max(120, size.height * 0.8)
+        let trunkX = max(30, size.width * 0.16)
+        let trunk = SKShapeNode(rectOf: CGSize(width: trunkWidth, height: trunkHeight), cornerRadius: trunkWidth / 2)
+        trunk.fillColor = style == "night"
+            ? NSColor(calibratedRed: 0.24, green: 0.16, blue: 0.12, alpha: 0.72)
+            : NSColor(calibratedRed: 0.42, green: 0.28, blue: 0.18, alpha: 0.6)
+        trunk.strokeColor = .clear
+        trunk.position = CGPoint(x: trunkX, y: trunkHeight / 2 - 10)
+        tree.addChild(trunk)
+
+        let canopyColor = style == "night"
+            ? NSColor(calibratedRed: 0.2, green: 0.34, blue: 0.24, alpha: 0.28)
+            : NSColor(calibratedRed: 0.42, green: 0.68, blue: 0.36, alpha: 0.24)
+        let canopyCenters = [
+            CGPoint(x: trunkX + size.width * 0.14, y: size.height * 0.78),
+            CGPoint(x: trunkX + size.width * 0.03, y: size.height * 0.66),
+            CGPoint(x: trunkX + size.width * 0.2, y: size.height * 0.58)
+        ]
+        let canopySizes = [
+            CGSize(width: size.width * 0.36, height: size.height * 0.28),
+            CGSize(width: size.width * 0.24, height: size.height * 0.2),
+            CGSize(width: size.width * 0.26, height: size.height * 0.2)
+        ]
+        for (center, canopySize) in zip(canopyCenters, canopySizes) {
+            let canopy = SKShapeNode(ellipseOf: canopySize)
+            canopy.fillColor = canopyColor
+            canopy.strokeColor = .clear
+            canopy.position = center
+            canopy.zPosition = -5
+            tree.addChild(canopy)
         }
 
-        addChild(perchGroup)
+        let branchColor = style == "night"
+            ? NSColor(calibratedRed: 0.36, green: 0.26, blue: 0.22, alpha: 0.56)
+            : NSColor(calibratedRed: 0.45, green: 0.31, blue: 0.18, alpha: 0.46)
+        let branchSpecs: [(start: CGPoint, end: CGPoint, width: CGFloat)] = [
+            (
+                CGPoint(x: trunkX + trunkWidth * 0.2, y: size.height * 0.72),
+                CGPoint(x: size.width * 0.58, y: size.height * 0.72),
+                6
+            ),
+            (
+                CGPoint(x: trunkX - trunkWidth * 0.1, y: size.height * 0.5),
+                CGPoint(x: size.width * 0.68, y: size.height * 0.52),
+                5
+            ),
+            (
+                CGPoint(x: trunkX + trunkWidth * 0.2, y: size.height * 0.31),
+                CGPoint(x: size.width * 0.5, y: size.height * 0.3),
+                5
+            )
+        ]
+
+        for spec in branchSpecs {
+            let path = CGMutablePath()
+            path.move(to: spec.start)
+            path.addLine(to: spec.end)
+
+            let branch = SKShapeNode(path: path)
+            branch.strokeColor = branchColor
+            branch.lineWidth = spec.width
+            branch.lineCap = .round
+            tree.addChild(branch)
+
+            let minX = min(spec.start.x, spec.end.x) + 18
+            let maxX = max(spec.start.x, spec.end.x) - 18
+            let y = (spec.start.y + spec.end.y) / 2 + 4
+            perchSegments.append(BirdPerchSegment(
+                xRange: minX...max(minX + 4, maxX),
+                y: y
+            ))
+        }
+
+        addChild(tree)
     }
 
     override func updateAmbientEffects() {
@@ -130,5 +202,39 @@ final class BirdScene: GameModeScene {
             fadeOut,
             .removeFromParent()
         ]))
+    }
+
+    func randomPerchPoint() -> CGPoint {
+        guard let perch = perchSegments.randomElement() else {
+            return CGPoint(x: size.width * 0.55, y: size.height * 0.5)
+        }
+        return CGPoint(
+            x: CGFloat.random(in: perch.xRange),
+            y: perch.y
+        )
+    }
+
+    private func makeCloud(center: CGPoint, scale: CGFloat, alpha: CGFloat) -> SKNode {
+        let cloud = SKNode()
+        let puffSizes = [
+            CGSize(width: 54 * scale, height: 24 * scale),
+            CGSize(width: 36 * scale, height: 20 * scale),
+            CGSize(width: 40 * scale, height: 18 * scale)
+        ]
+        let puffOffsets = [
+            CGPoint(x: 0, y: 0),
+            CGPoint(x: -20 * scale, y: -2 * scale),
+            CGPoint(x: 20 * scale, y: -3 * scale)
+        ]
+
+        for (puffSize, offset) in zip(puffSizes, puffOffsets) {
+            let puff = SKShapeNode(ellipseOf: puffSize)
+            puff.fillColor = NSColor(white: 1.0, alpha: alpha)
+            puff.strokeColor = .clear
+            puff.position = CGPoint(x: center.x + offset.x, y: center.y + offset.y)
+            cloud.addChild(puff)
+        }
+
+        return cloud
     }
 }
