@@ -451,15 +451,33 @@ struct SettingsView: View {
                         .foregroundColor(.secondary)
                         .frame(width: 35)
                 }
+                Text("Commits grow your friends over time. Manual feeding only gives them a small happiness boost.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
 
-            Section("Tank Appearance") {
-                Toggle("Show bubbles", isOn: $settings.showBubbles)
-                Picker("Background", selection: $settings.tankBackground) {
-                    Text("Ocean").tag("ocean")
-                    Text("Dark").tag("dark")
-                    Text("Transparent").tag("transparent")
+            Section("World") {
+                Picker("Mode", selection: $settings.currentGameMode) {
+                    ForEach(GameModeID.allCases) { mode in
+                        Label(mode.displayName, systemImage: mode.iconName)
+                            .tag(mode.rawValue)
+                    }
                 }
+                Text(modeDescription)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+
+                Toggle("Show window border", isOn: $settings.showWindowBorder)
+                Toggle("Ambient effects", isOn: $settings.showAmbientEffects)
+                    .help("Bubbles in Aquarium, breeze lines in Aviary")
+                Picker("Backdrop", selection: $settings.sceneBackgroundStyle) {
+                    Text("Themed").tag("themed")
+                    Text("Night").tag("night")
+                    Text("Clear").tag("clear")
+                }
+                Text("Backdrop and effects adapt to the selected world.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
 
             Section("Keyboard Shortcut") {
@@ -493,7 +511,7 @@ struct SettingsView: View {
                     .font(.headline)
                     .padding(.bottom, 4)
 
-                ideaRow("bird", "Game Modes", "Switch between fish, birds, orcs, mecha, and more. Each mode has its own art, animations, and environment.")
+                ideaRow("bird", "More Worlds", "Expand beyond aquarium and aviary into new habitats with their own art, behaviors, and commit reactions.")
                 ideaRow("cursorarrow.click.2", "Click Actions", "Bind what happens when you click a friend. Open a URL, launch your editor to the latest commit, open Claude Code.")
                 ideaRow("message", "Talk to Your Friends", "Send messages to friends via MCP. They relay prompts to Cursor, Claude Code, or any connected agent.")
                 ideaRow("network", "Orchestrator Mode", "Your friends become workers. Assign tasks, watch them build. Like Warcraft peons for your codebase.")
@@ -526,6 +544,15 @@ struct SettingsView: View {
             }
         }
         .padding(.vertical, 2)
+    }
+
+    private var modeDescription: String {
+        switch GameModeID(rawValue: settings.currentGameMode) ?? .fish {
+        case .fish:
+            return "Aquarium keeps the friends in water, with calmer swim paths and optional bubbles."
+        case .bird:
+            return "Aviary gives each repo a bird that perches, hops, and takes a flight loop when a commit lands."
+        }
     }
 
 }

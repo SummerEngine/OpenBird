@@ -1,6 +1,31 @@
 import SpriteKit
 import AppKit
 
+enum GameModeID: String, CaseIterable, Identifiable {
+    case fish
+    case bird
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+        case .fish:
+            return "Aquarium"
+        case .bird:
+            return "Aviary"
+        }
+    }
+
+    var iconName: String {
+        switch self {
+        case .fish:
+            return "water.waves"
+        case .bird:
+            return "bird"
+        }
+    }
+}
+
 // MARK: - GameMode Protocol
 
 protocol GameMode {
@@ -81,6 +106,10 @@ class GameModeScene: SKScene {
     func updateCreatureState(_ repoID: UUID, creature: Creature) {
         creatures[repoID]?.updateAppearance(creature)
     }
+
+    func updateAmbientEffects() {}
+
+    func updateBackground() {}
 
     func selectCreature(_ repoID: UUID?) {
         // Deselect previous
@@ -344,6 +373,10 @@ class CreatureNode: SKSpriteNode {
 
     func updateName(_ newName: String) {
         creatureName = newName
+    }
+
+    func updateNameVisibility() {
+        // Override in subclasses when names are rendered.
     }
 
     func swimToFood(at point: CGPoint, food: SKNode) {

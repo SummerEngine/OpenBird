@@ -26,6 +26,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var currentScene: GameModeScene?
     private var cancellables = Set<AnyCancellable>()
     private let fishMode = FishMode()
+    private let birdMode = BirdMode()
     private var settingsWindow: NSWindow?
     private var commitsWindow: NSWindow?
     private var addRepoWindow: NSWindow?
@@ -40,29 +41,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Setup tank window
         tankWindow = TankWindow()
-        let scene = fishMode.createScene(size: tankWindow.skView.bounds.size)
-        tankWindow.presentScene(scene)
-        currentScene = scene
-
-        // Wire scene callbacks
-        scene.onRenameCreature = { [weak self] repoID, newName in
-            self?.renameCreature(repoID: repoID, newName: newName)
-        }
-        scene.onViewCommits = { [weak self] repoID in
-            self?.showCommitsForRepo(repoID)
-        }
-        scene.onAddRepository = { [weak self] in
-            self?.openAddRepository()
-        }
-        scene.onOpenSettings = { [weak self] in
-            self?.openSettings()
-        }
-        scene.onHideWindow = { [weak self] in
-            self?.toggleTank()
-        }
-        scene.onResetSize = { [weak self] in
-            self?.tankWindow.resetToDefaultSize()
-        }
+        installScene(modeID: AppSettings.shared.currentGameMode)
 
         // Setup status bar
         statusBarController = StatusBarController(
@@ -118,10 +97,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             .sink { [weak self] _ in
                 guard let scene = self?.currentScene else { return }
                 for (_, node) in scene.creatures {
-                    if let fishNode = node as? FishCreatureNode {
-                        fishNode.updateNameVisibility()
-                    }
+                    node.updateNameVisibility()
                 }
+            }
+            .store(in: &cancellables)
+
+        AppSettings.shared.$currentGameMode
+            .dropFirst()
+            .sink { [weak self] modeID in
+                self?.installScene(modeID: modeID)
             }
             .store(in: &cancellables)
 
@@ -146,17 +130,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
             .store(in: &cancellables)
 
-        AppSettings.shared.$showBubbles
+        AppSettings.shared.$showAmbientEffects
             .dropFirst()
             .sink { [weak self] _ in
-                (self?.currentScene as? FishScene)?.updateBubbles()
+                self?.currentScene?.updateAmbientEffects()
             }
             .store(in: &cancellables)
 
-        AppSettings.shared.$tankBackground
+        AppSettings.shared.$sceneBackgroundStyle
             .dropFirst()
             .sink { [weak self] _ in
-                (self?.currentScene as? FishScene)?.updateBackground()
+                self?.currentScene?.updateBackground()
+            }
+            .store(in: &cancellables)
+
+        AppSettings.shared.$showWindowBorder
+            .dropFirst()
+            .sink { [weak self] _ in
+                self?.tankWindow.updateChrome()
             }
             .store(in: &cancellables)
 
@@ -183,7 +174,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         for repo in repos where !sceneIDs.contains(repo.id) {
             if let creature = CreatureLifecycleService.shared.creatures[repo.id] {
                 let color = NSColor.fromHex(repo.color)
-                let node = fishMode.createCreatureNode(for: creature, name: repo.creatureName, color: color)
+                let node = activeMode().createCreatureNode(for: creature, name: repo.creatureName, color: color)
                 let sceneSize = scene.size
                 node.position = CGPoint(
                     x: CGFloat.random(in: 30...max(31, sceneSize.width - 30)),
@@ -195,6 +186,60 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         for id in sceneIDs where !repoIDs.contains(id) {
             scene.removeCreature(for: id)
+        }
+    }
+
+    private func activeMode() -> any GameMode {
+        switch GameModeID(rawValue: AppSettings.shared.currentGameMode) ?? .fish {
+        case .fish:
+            return fishMode
+        case .bird:
+            return birdMode
+        }
+    }
+
+    private func installScene(modeID: String) {
+        let resolvedMode = GameModeID(rawValue: modeID) ?? .fish
+        let scene = activeScene(for: resolvedMode)
+        wireSceneCallbacks(scene)
+        tankWindow.presentScene(scene)
+        currentScene = scene
+        syncCreaturesWithRepos(GitMonitorService.shared.repositories)
+        scene.updateBackground()
+        scene.updateAmbientEffects()
+
+        if !tankWindow.isVisible {
+            tankWindow.skView.isPaused = true
+        }
+    }
+
+    private func activeScene(for modeID: GameModeID) -> GameModeScene {
+        switch modeID {
+        case .fish:
+            return fishMode.createScene(size: tankWindow.skView.bounds.size)
+        case .bird:
+            return birdMode.createScene(size: tankWindow.skView.bounds.size)
+        }
+    }
+
+    private func wireSceneCallbacks(_ scene: GameModeScene) {
+        scene.onRenameCreature = { [weak self] repoID, newName in
+            self?.renameCreature(repoID: repoID, newName: newName)
+        }
+        scene.onViewCommits = { [weak self] repoID in
+            self?.showCommitsForRepo(repoID)
+        }
+        scene.onAddRepository = { [weak self] in
+            self?.openAddRepository()
+        }
+        scene.onOpenSettings = { [weak self] in
+            self?.openSettings()
+        }
+        scene.onHideWindow = { [weak self] in
+            self?.toggleTank()
+        }
+        scene.onResetSize = { [weak self] in
+            self?.tankWindow.resetToDefaultSize()
         }
     }
 

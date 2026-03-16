@@ -1,8 +1,8 @@
 import SpriteKit
 
 final class FishMode: GameMode {
-    let id = "fish"
-    let displayName = "Aquarium"
+    let id = GameModeID.fish.rawValue
+    let displayName = GameModeID.fish.displayName
 
     func createScene(size: CGSize) -> GameModeScene {
         return FishScene(size: size)

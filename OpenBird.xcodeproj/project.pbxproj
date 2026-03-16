@@ -20,6 +20,9 @@
 		A1000000000000000000000B /* FishMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000B /* FishMode.swift */; };
 		A1000000000000000000000C /* FishScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000C /* FishScene.swift */; };
 		A1000000000000000000000D /* FishCreatureNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* FishCreatureNode.swift */; };
+		D10000000000000000000001 /* BirdMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* BirdMode.swift */; };
+		D10000000000000000000002 /* BirdScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000002 /* BirdScene.swift */; };
+		D10000000000000000000003 /* BirdCreatureNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000003 /* BirdCreatureNode.swift */; };
 		A1000000000000000000000E /* TankWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000E /* TankWindow.swift */; };
 		A1000000000000000000000F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000F /* SettingsView.swift */; };
 		A10000000000000000000010 /* RepositoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* RepositoryListView.swift */; };
@@ -47,6 +50,9 @@
 		A2000000000000000000000B /* FishMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishMode.swift; sourceTree = "<group>"; };
 		A2000000000000000000000C /* FishScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishScene.swift; sourceTree = "<group>"; };
 		A2000000000000000000000D /* FishCreatureNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishCreatureNode.swift; sourceTree = "<group>"; };
+		D20000000000000000000001 /* BirdMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdMode.swift; sourceTree = "<group>"; };
+		D20000000000000000000002 /* BirdScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdScene.swift; sourceTree = "<group>"; };
+		D20000000000000000000003 /* BirdCreatureNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdCreatureNode.swift; sourceTree = "<group>"; };
 		A2000000000000000000000E /* TankWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankWindow.swift; sourceTree = "<group>"; };
 		A2000000000000000000000F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A20000000000000000000010 /* RepositoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryListView.swift; sourceTree = "<group>"; };
@@ -169,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				A40000000000000000000008 /* Fish */,
+				D40000000000000000000001 /* Bird */,
 			);
 			path = GameModes;
 			sourceTree = "<group>";
@@ -181,6 +188,16 @@
 				A2000000000000000000000D /* FishCreatureNode.swift */,
 			);
 			path = Fish;
+			sourceTree = "<group>";
+		};
+		D40000000000000000000001 /* Bird */ = {
+			isa = PBXGroup;
+			children = (
+				D20000000000000000000001 /* BirdMode.swift */,
+				D20000000000000000000002 /* BirdScene.swift */,
+				D20000000000000000000003 /* BirdCreatureNode.swift */,
+			);
+			path = Bird;
 			sourceTree = "<group>";
 		};
 		A40000000000000000000009 /* Views */ = {
@@ -286,6 +303,9 @@
 				A1000000000000000000000B /* FishMode.swift in Sources */,
 				A1000000000000000000000C /* FishScene.swift in Sources */,
 				A1000000000000000000000D /* FishCreatureNode.swift in Sources */,
+				D10000000000000000000001 /* BirdMode.swift in Sources */,
+				D10000000000000000000002 /* BirdScene.swift in Sources */,
+				D10000000000000000000003 /* BirdCreatureNode.swift in Sources */,
 				A1000000000000000000000E /* TankWindow.swift in Sources */,
 				A1000000000000000000000F /* SettingsView.swift in Sources */,
 				A10000000000000000000010 /* RepositoryListView.swift in Sources */,
