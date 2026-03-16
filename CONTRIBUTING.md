@@ -24,11 +24,20 @@ Thanks for wanting to contribute. Here's how to get started.
 
 ## Architecture
 
-OpenBird uses a protocol-based `GameMode` system. The current mode is `Fish` (the aquarium). If you want to add a new visualization mode:
+OpenBird uses a protocol-based `GameMode` system. Worlds like Aquarium and Aviary live under `GameModes/`, and creature behavior is layered on top of those worlds.
+
+If you want to add a new visualization mode:
 
 1. Create a new directory under `GameModes/YourMode/`
 2. Implement `GameMode`, `GameModeScene`, and `GameModeCreatureNode`
 3. Wire it up in `OpenBirdApp.swift`
+
+If you want to add a new creature or extend Jam behavior:
+
+1. Start from the existing world folder, for example `GameModes/Fish/` or `GameModes/Bird/`
+2. Implement normal idle movement, feed reaction, and Jam hooks on the creature node
+3. Keep Jam as a behavior layer on the existing creature, not as a separate creature type
+4. Read `CREATURE_JAM_GUIDE.md` before adding or changing music-reactive behavior
 
 ### Key services
 
@@ -36,6 +45,7 @@ OpenBird uses a protocol-based `GameMode` system. The current mode is `Fish` (th
 - **CreatureLifecycleService** -- manages hunger, happiness, growth, death
 - **PersistenceService** -- reads/writes JSON to `~/Library/Application Support/OpenBird/`
 - **QuestService** -- tracks achievement progress
+- **SystemAudioMonitorService** -- reads local system audio energy for Jam behavior
 
 ## Code Style
 

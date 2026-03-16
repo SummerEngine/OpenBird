@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 import ScreenCaptureKit
 import CoreGraphics
@@ -30,12 +31,17 @@ final class SystemAudioMonitorService: NSObject, ObservableObject {
     private let defaults = UserDefaults.standard
     private let requestedPermissionKey = "jamModeRequestedScreenCapturePermission"
     private let sampleQueue = DispatchQueue(label: "com.openbird.audio-monitor.samples")
+    private let beatCooldown: CFTimeInterval = 0.24
+    private let minimumBeatThreshold: Float = 0.08
+    private let noiseGate: Float = 0.035
 
     private var stream: SCStream?
     private var activeStartTask: Task<Void, Never>?
     private var decayTimer: Timer?
     private var smoothedLevel: Float = 0
-    private var lastPublishedLevel: Float = 0
+    private var movingAverageLevel: Float = 0
+    private var previousProcessedLevel: Float = 0
+    private var lastBeatTimestamp: CFTimeInterval = 0
 
     private override init() {
         super.init()
@@ -78,7 +84,7 @@ final class SystemAudioMonitorService: NSObject, ObservableObject {
                 self.permissionState = granted ? .restartRequired : .denied
                 self.captureErrorMessage = granted
                     ? "Relaunch OpenBird after granting access so Jam Mode can react to music."
-                    : "Open Screen Recording settings to allow Jam Mode to read system audio."
+                    : "Open Screen Recording settings to allow Jam Mode to read system audio levels. The microphone is not used."
             }
         }
     }
@@ -129,7 +135,9 @@ final class SystemAudioMonitorService: NSObject, ObservableObject {
             self.captureErrorMessage = nil
         }
         smoothedLevel = 0
-        lastPublishedLevel = 0
+        movingAverageLevel = 0
+        previousProcessedLevel = 0
+        lastBeatTimestamp = 0
     }
 
     private func startDecayTimer() {
@@ -184,6 +192,10 @@ final class SystemAudioMonitorService: NSObject, ObservableObject {
             configuration.height = 2
             configuration.minimumFrameInterval = CMTime(value: 1, timescale: 60)
             configuration.queueDepth = 1
+            if #available(macOS 15.0, *) {
+                configuration.captureMicrophone = false
+                configuration.microphoneCaptureDeviceID = nil
+            }
 
             let stream = SCStream(filter: filter, configuration: configuration, delegate: self)
             try stream.addStreamOutput(self, type: .audio, sampleHandlerQueue: sampleQueue)
@@ -206,16 +218,43 @@ final class SystemAudioMonitorService: NSObject, ObservableObject {
     }
 
     private func publish(level rawLevel: Float) {
-        let level = max(0, min(1, rawLevel))
-        smoothedLevel = (smoothedLevel * 0.8) + (level * 0.2)
-        let beatDelta = max(0, level - (lastPublishedLevel * 1.12))
-        let beat = min(1, beatDelta * 3.2)
-        lastPublishedLevel = smoothedLevel
+        let processedLevel = processedLevel(from: rawLevel)
+        let smoothing: Float = processedLevel > smoothedLevel ? 0.16 : 0.05
+        smoothedLevel += (processedLevel - smoothedLevel) * smoothing
+        movingAverageLevel += (processedLevel - movingAverageLevel) * 0.018
+
+        let slope = max(0, processedLevel - previousProcessedLevel)
+        let transient = max(0, processedLevel - max(smoothedLevel, movingAverageLevel + 0.015))
+        let threshold = max(minimumBeatThreshold, movingAverageLevel * 1.55 + 0.025)
+        let now = CACurrentMediaTime()
+
+        var beatPulse: Float = 0
+        if processedLevel > threshold,
+           slope > 0.03,
+           transient > 0.035,
+           now - lastBeatTimestamp > beatCooldown {
+            lastBeatTimestamp = now
+            beatPulse = 1.0
+        }
+
+        previousProcessedLevel = processedLevel
 
         DispatchQueue.main.async {
-            self.audioLevel = max(self.audioLevel * 0.78, Double(self.smoothedLevel))
-            self.beatStrength = max(self.beatStrength * 0.52, Double(beat))
+            let visualLevel = max(Double(self.smoothedLevel), self.audioLevel * 0.9)
+            let decayedBeat = self.beatStrength * 0.84
+            self.audioLevel = visualLevel
+            self.beatStrength = max(decayedBeat, Double(beatPulse))
         }
+    }
+
+    private func processedLevel(from rawLevel: Float) -> Float {
+        let clamped = max(0, min(1, rawLevel))
+        let gated = max(0, clamped - noiseGate)
+        guard gated > 0 else { return 0 }
+
+        let normalized = min(1, gated / (1 - noiseGate))
+        // Compress the envelope so loud moments still pop without turning every sample into a spike.
+        return pow(normalized, 0.82)
     }
 
     private func audioLevel(from sampleBuffer: CMSampleBuffer) -> Float? {

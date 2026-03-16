@@ -88,8 +88,11 @@ final class TankSKView: SKView {
 
 final class TankWindow: NSPanel {
     let skView: TankSKView
+    var onBlur: (() -> Void)?
     private var moveObserver: NSObjectProtocol?
     private var resizeObserver: NSObjectProtocol?
+    private var resignKeyObserver: NSObjectProtocol?
+    private var resignMainObserver: NSObjectProtocol?
 
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { true }
@@ -152,11 +155,27 @@ final class TankWindow: NSPanel {
         ) { [weak self] _ in
             self?.saveFrame()
         }
+        resignKeyObserver = NotificationCenter.default.addObserver(
+            forName: NSWindow.didResignKeyNotification,
+            object: self,
+            queue: .main
+        ) { [weak self] _ in
+            self?.onBlur?()
+        }
+        resignMainObserver = NotificationCenter.default.addObserver(
+            forName: NSWindow.didResignMainNotification,
+            object: self,
+            queue: .main
+        ) { [weak self] _ in
+            self?.onBlur?()
+        }
     }
 
     deinit {
         if let obs = moveObserver { NotificationCenter.default.removeObserver(obs) }
         if let obs = resizeObserver { NotificationCenter.default.removeObserver(obs) }
+        if let obs = resignKeyObserver { NotificationCenter.default.removeObserver(obs) }
+        if let obs = resignMainObserver { NotificationCenter.default.removeObserver(obs) }
     }
 
     func presentScene(_ scene: SKScene) {

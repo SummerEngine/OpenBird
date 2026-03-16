@@ -21,7 +21,11 @@ final class FishScene: GameModeScene {
             creature.removeAction(forKey: "swimLoop")
             creature.removeAction(forKey: "hovering")
             creature.removeAction(forKey: "hoverTimer")
-            creature.startIdleBehavior(in: size)
+            if isJamModeActive {
+                creature.beginJamMode()
+            } else {
+                creature.startIdleBehavior(in: size)
+            }
         }
         // Reposition backdrop
         childNode(withName: "backdrop")?.position = CGPoint(x: size.width / 2, y: size.height / 2)

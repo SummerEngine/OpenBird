@@ -23,9 +23,17 @@ struct SettingsView: View {
                 .tabItem { Label("Preferences", systemImage: "gearshape") }
                 .tag(2)
 
+            SettingsJamTab()
+                .tabItem { Label("Jam", systemImage: "waveform") }
+                .tag(3)
+
+            SettingsAccountTab()
+                .tabItem { Label("Account", systemImage: "person.crop.circle") }
+                .tag(4)
+
             SettingsRoadmapTab()
                 .tabItem { Label("Roadmap", systemImage: "lightbulb") }
-                .tag(3)
+                .tag(5)
         }
         .frame(minWidth: 500, minHeight: 380)
         .sheet(isPresented: $showingAddRepo) {

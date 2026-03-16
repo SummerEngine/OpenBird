@@ -20,9 +20,6 @@
 		A1000000000000000000000B /* FishMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000B /* FishMode.swift */; };
 		A1000000000000000000000C /* FishScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000C /* FishScene.swift */; };
 		A1000000000000000000000D /* FishCreatureNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* FishCreatureNode.swift */; };
-		D10000000000000000000001 /* BirdMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* BirdMode.swift */; };
-		D10000000000000000000002 /* BirdScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000002 /* BirdScene.swift */; };
-		D10000000000000000000003 /* BirdCreatureNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000003 /* BirdCreatureNode.swift */; };
 		A1000000000000000000000E /* TankWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000E /* TankWindow.swift */; };
 		A1000000000000000000000F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000F /* SettingsView.swift */; };
 		A10000000000000000000010 /* RepositoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* RepositoryListView.swift */; };
@@ -34,6 +31,21 @@
 		B10000000000000000000001 /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* Quest.swift */; };
 		B10000000000000000000002 /* QuestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* QuestService.swift */; };
 		C10000000000000000000001 /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000002 /* ColorHelper.swift */; };
+		D10000000000000000000001 /* BirdMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* BirdMode.swift */; };
+		D10000000000000000000002 /* BirdScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000002 /* BirdScene.swift */; };
+		D10000000000000000000003 /* BirdCreatureNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000003 /* BirdCreatureNode.swift */; };
+		D10000000000000000000004 /* BirdCreatureNode+Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000004 /* BirdCreatureNode+Art.swift */; };
+		E10000000000000000000001 /* SystemAudioMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000001 /* SystemAudioMonitorService.swift */; };
+		E10000000000000000000002 /* JamMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000002 /* JamMode.swift */; };
+		E10000000000000000000003 /* JamScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000003 /* JamScene.swift */; };
+		E10000000000000000000004 /* JamCreatureNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000004 /* JamCreatureNode.swift */; };
+		E10000000000000000000005 /* SettingsPreferencesTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000005 /* SettingsPreferencesTab.swift */; };
+		E10000000000000000000006 /* SettingsRoadmapTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000006 /* SettingsRoadmapTab.swift */; };
+		E10000000000000000000007 /* SettingsAccountTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000007 /* SettingsAccountTab.swift */; };
+		E10000000000000000000008 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000008 /* StatusBarController.swift */; };
+		E1000000000000000000000A /* SettingsJamTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2000000000000000000000A /* SettingsJamTab.swift */; };
+		E10000000000000000000009 /* UpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000000000000000000009 /* UpdateService.swift */; };
+		F10000000000000000000001 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = F60000000000000000000001 /* Sparkle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,9 +62,6 @@
 		A2000000000000000000000B /* FishMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishMode.swift; sourceTree = "<group>"; };
 		A2000000000000000000000C /* FishScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishScene.swift; sourceTree = "<group>"; };
 		A2000000000000000000000D /* FishCreatureNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishCreatureNode.swift; sourceTree = "<group>"; };
-		D20000000000000000000001 /* BirdMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdMode.swift; sourceTree = "<group>"; };
-		D20000000000000000000002 /* BirdScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdScene.swift; sourceTree = "<group>"; };
-		D20000000000000000000003 /* BirdCreatureNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdCreatureNode.swift; sourceTree = "<group>"; };
 		A2000000000000000000000E /* TankWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankWindow.swift; sourceTree = "<group>"; };
 		A2000000000000000000000F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A20000000000000000000010 /* RepositoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryListView.swift; sourceTree = "<group>"; };
@@ -67,6 +76,20 @@
 		B10000000000000000000003 /* Quest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quest.swift; sourceTree = "<group>"; };
 		B10000000000000000000004 /* QuestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestService.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
+		D20000000000000000000001 /* BirdMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdMode.swift; sourceTree = "<group>"; };
+		D20000000000000000000002 /* BirdScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdScene.swift; sourceTree = "<group>"; };
+		D20000000000000000000003 /* BirdCreatureNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirdCreatureNode.swift; sourceTree = "<group>"; };
+		D20000000000000000000004 /* BirdCreatureNode+Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BirdCreatureNode+Art.swift"; sourceTree = "<group>"; };
+		E20000000000000000000001 /* SystemAudioMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemAudioMonitorService.swift; sourceTree = "<group>"; };
+		E20000000000000000000002 /* JamMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JamMode.swift; sourceTree = "<group>"; };
+		E20000000000000000000003 /* JamScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JamScene.swift; sourceTree = "<group>"; };
+		E20000000000000000000004 /* JamCreatureNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JamCreatureNode.swift; sourceTree = "<group>"; };
+		E20000000000000000000005 /* SettingsPreferencesTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPreferencesTab.swift; sourceTree = "<group>"; };
+		E20000000000000000000006 /* SettingsRoadmapTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoadmapTab.swift; sourceTree = "<group>"; };
+		E20000000000000000000007 /* SettingsAccountTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountTab.swift; sourceTree = "<group>"; };
+		E20000000000000000000008 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		E2000000000000000000000A /* SettingsJamTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsJamTab.swift; sourceTree = "<group>"; };
+		E20000000000000000000009 /* UpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,35 +98,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000015 /* SpriteKit.framework in Frameworks */,
+				F10000000000000000000001 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A40000000000000000000001 /* = Begin MainGroup = */ = {
+		A40000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
 				A40000000000000000000002 /* OpenBird */,
 				A40000000000000000000010 /* Frameworks */,
 				A40000000000000000000011 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		A40000000000000000000011 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A20000000000000000000018 /* OpenBird.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A40000000000000000000010 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				A20000000000000000000015 /* SpriteKit.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		A40000000000000000000002 /* OpenBird */ = {
@@ -132,15 +140,6 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
-		B10000000000000000000005 /* Quests */ = {
-			isa = PBXGroup;
-			children = (
-				B10000000000000000000003 /* Quest.swift */,
-				B10000000000000000000004 /* QuestService.swift */,
-			);
-			path = Quests;
-			sourceTree = "<group>";
-		};
 		A40000000000000000000004 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +158,8 @@
 				A20000000000000000000007 /* CreatureLifecycleService.swift */,
 				A20000000000000000000008 /* PersistenceService.swift */,
 				A20000000000000000000009 /* HotkeyService.swift */,
+				E20000000000000000000001 /* SystemAudioMonitorService.swift */,
+				E20000000000000000000009 /* UpdateService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -176,6 +177,7 @@
 			children = (
 				A40000000000000000000008 /* Fish */,
 				D40000000000000000000001 /* Bird */,
+				E40000000000000000000001 /* Jam */,
 			);
 			path = GameModes;
 			sourceTree = "<group>";
@@ -190,21 +192,13 @@
 			path = Fish;
 			sourceTree = "<group>";
 		};
-		D40000000000000000000001 /* Bird */ = {
-			isa = PBXGroup;
-			children = (
-				D20000000000000000000001 /* BirdMode.swift */,
-				D20000000000000000000002 /* BirdScene.swift */,
-				D20000000000000000000003 /* BirdCreatureNode.swift */,
-			);
-			path = Bird;
-			sourceTree = "<group>";
-		};
 		A40000000000000000000009 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E20000000000000000000008 /* StatusBarController.swift */,
 				A2000000000000000000000E /* TankWindow.swift */,
 				A2000000000000000000000F /* SettingsView.swift */,
+				E40000000000000000000002 /* Settings */,
 				A20000000000000000000010 /* RepositoryListView.swift */,
 				A20000000000000000000011 /* AddRepositoryView.swift */,
 				A20000000000000000000012 /* ActivityLogView.swift */,
@@ -219,6 +213,63 @@
 				C10000000000000000000002 /* ColorHelper.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000010 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000015 /* SpriteKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000011 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000018 /* OpenBird.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B10000000000000000000005 /* Quests */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000003 /* Quest.swift */,
+				B10000000000000000000004 /* QuestService.swift */,
+			);
+			path = Quests;
+			sourceTree = "<group>";
+		};
+		D40000000000000000000001 /* Bird */ = {
+			isa = PBXGroup;
+			children = (
+				D20000000000000000000001 /* BirdMode.swift */,
+				D20000000000000000000002 /* BirdScene.swift */,
+				D20000000000000000000003 /* BirdCreatureNode.swift */,
+				D20000000000000000000004 /* BirdCreatureNode+Art.swift */,
+			);
+			path = Bird;
+			sourceTree = "<group>";
+		};
+		E40000000000000000000001 /* Jam */ = {
+			isa = PBXGroup;
+			children = (
+				E20000000000000000000002 /* JamMode.swift */,
+				E20000000000000000000003 /* JamScene.swift */,
+				E20000000000000000000004 /* JamCreatureNode.swift */,
+			);
+			path = Jam;
+			sourceTree = "<group>";
+		};
+		E40000000000000000000002 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E20000000000000000000007 /* SettingsAccountTab.swift */,
+				E2000000000000000000000A /* SettingsJamTab.swift */,
+				E20000000000000000000005 /* SettingsPreferencesTab.swift */,
+				E20000000000000000000006 /* SettingsRoadmapTab.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,6 +288,9 @@
 			dependencies = (
 			);
 			name = OpenBird;
+			packageProductDependencies = (
+				F60000000000000000000001 /* Sparkle */,
+			);
 			productName = OpenBird;
 			productReference = A20000000000000000000018 /* OpenBird.app */;
 			productType = "com.apple.product-type.application";
@@ -249,7 +303,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					A50000000000000000000001 = {
 						CreatedOnToolsVersion = 15.0;
@@ -264,7 +318,10 @@
 				en,
 				Base,
 			);
-			mainGroup = A40000000000000000000001 /* = Begin MainGroup = */;
+			mainGroup = A40000000000000000000001;
+			packageReferences = (
+				F50000000000000000000001 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			productRefGroup = A40000000000000000000011 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -299,6 +356,8 @@
 				A10000000000000000000007 /* CreatureLifecycleService.swift in Sources */,
 				A10000000000000000000008 /* PersistenceService.swift in Sources */,
 				A10000000000000000000009 /* HotkeyService.swift in Sources */,
+				E10000000000000000000001 /* SystemAudioMonitorService.swift in Sources */,
+				E10000000000000000000009 /* UpdateService.swift in Sources */,
 				A1000000000000000000000A /* GameMode.swift in Sources */,
 				A1000000000000000000000B /* FishMode.swift in Sources */,
 				A1000000000000000000000C /* FishScene.swift in Sources */,
@@ -306,8 +365,17 @@
 				D10000000000000000000001 /* BirdMode.swift in Sources */,
 				D10000000000000000000002 /* BirdScene.swift in Sources */,
 				D10000000000000000000003 /* BirdCreatureNode.swift in Sources */,
+				D10000000000000000000004 /* BirdCreatureNode+Art.swift in Sources */,
+				E10000000000000000000002 /* JamMode.swift in Sources */,
+				E10000000000000000000003 /* JamScene.swift in Sources */,
+				E10000000000000000000004 /* JamCreatureNode.swift in Sources */,
+				E10000000000000000000008 /* StatusBarController.swift in Sources */,
 				A1000000000000000000000E /* TankWindow.swift in Sources */,
 				A1000000000000000000000F /* SettingsView.swift in Sources */,
+				E10000000000000000000007 /* SettingsAccountTab.swift in Sources */,
+				E1000000000000000000000A /* SettingsJamTab.swift in Sources */,
+				E10000000000000000000005 /* SettingsPreferencesTab.swift in Sources */,
+				E10000000000000000000006 /* SettingsRoadmapTab.swift in Sources */,
 				A10000000000000000000010 /* RepositoryListView.swift in Sources */,
 				A10000000000000000000011 /* AddRepositoryView.swift in Sources */,
 				A10000000000000000000012 /* ActivityLogView.swift in Sources */,
@@ -355,7 +423,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = FXK7AXT3WH;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -378,6 +448,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -417,7 +488,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = FXK7AXT3WH;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -433,6 +506,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -447,7 +521,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FXK7AXT3WH;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenBird/Info.plist;
@@ -476,7 +550,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FXK7AXT3WH;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenBird/Info.plist;
@@ -496,6 +570,17 @@
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F50000000000000000000001 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCConfigurationList section */
 		A70000000000000000000001 /* Build configuration list for PBXProject "OpenBird" */ = {
@@ -517,6 +602,14 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F60000000000000000000001 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F50000000000000000000001 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A50000000000000000000002 /* Project object */;
 }

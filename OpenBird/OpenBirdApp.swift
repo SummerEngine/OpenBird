@@ -27,7 +27,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var cancellables = Set<AnyCancellable>()
     private let fishMode = FishMode()
     private let birdMode = BirdMode()
-    private let jamMode = JamMode()
     private var settingsWindow: NSWindow?
     private var commitsWindow: NSWindow?
     private var addRepoWindow: NSWindow?
@@ -38,19 +37,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
 
         // Initialize services
+        _ = UpdateService.shared
         CreatureLifecycleService.shared.start()
         GitMonitorService.shared.loadAndStartWatching()
         SystemAudioMonitorService.shared.checkPermissionStatus()
 
+        if AppSettings.shared.currentGameMode == GameModeID.jam.rawValue {
+            AppSettings.shared.currentGameMode = GameModeID.fish.rawValue
+        }
+
         // Setup tank window
         tankWindow = TankWindow()
+        tankWindow.onBlur = { [weak self] in
+            self?.currentScene?.selectCreature(nil)
+        }
         installScene(modeID: AppSettings.shared.currentGameMode)
 
         // Setup status bar
         statusBarController = StatusBarController(
             onToggle: { [weak self] in self?.toggleTank() },
             onSettings: { [weak self] in self?.openSettings() },
-            onAddRepo: { [weak self] in self?.openAddRepository() }
+            onAddRepo: { [weak self] in self?.openAddRepository() },
+            onCheckForUpdates: { UpdateService.shared.checkForUpdates() }
         )
 
         // Setup hotkey
@@ -120,6 +128,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 self?.refreshSystemAudioMonitoring()
             }
             .store(in: &cancellables)
+
+        SystemAudioMonitorService.shared.$permissionState
+            .dropFirst()
+            .sink { [weak self] _ in
+                self?.refreshSystemAudioMonitoring()
+            }
+            .store(in: &cancellables)
+
+        Publishers.CombineLatest(
+            SystemAudioMonitorService.shared.$audioLevel,
+            SystemAudioMonitorService.shared.$beatStrength
+        )
+        .receive(on: RunLoop.main)
+        .sink { [weak self] level, beat in
+            self?.currentScene?.updateJamMode(level: CGFloat(level), beat: CGFloat(beat))
+        }
+        .store(in: &cancellables)
 
         AppSettings.shared.$followAcrossSpaces
             .dropFirst()
@@ -224,12 +249,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         case .bird:
             return birdMode
         case .jam:
-            return jamMode
+            return fishMode
         }
     }
 
     private func installScene(modeID: String) {
-        let resolvedMode = GameModeID(rawValue: modeID) ?? .fish
+        let storedMode = GameModeID(rawValue: modeID) ?? .fish
+        let resolvedMode: GameModeID = storedMode == .jam ? .fish : storedMode
         let mode = mode(for: resolvedMode)
         let scene = mode.createScene(size: tankWindow.skView.bounds.size)
         wireSceneCallbacks(scene)
@@ -421,8 +447,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func refreshSystemAudioMonitoring() {
-        let shouldMonitor = AppSettings.shared.currentGameMode == GameModeID.jam.rawValue
-            && AppSettings.shared.jamModeAudioReactiveEnabled
+        let shouldMonitor = AppSettings.shared.jamModeAudioReactiveEnabled
             && tankWindow.isVisible
 
         if shouldMonitor {
@@ -430,62 +455,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             SystemAudioMonitorService.shared.stop()
         }
+
+        let shouldJam = shouldMonitor && SystemAudioMonitorService.shared.hasScreenCapturePermission
+        currentScene?.setJamModeActive(shouldJam)
     }
-}
-
-// MARK: - Status Bar Controller
-
-final class StatusBarController {
-    private var statusItem: NSStatusItem?
-    private let onToggle: () -> Void
-    private let onSettings: () -> Void
-    private let onAddRepo: () -> Void
-
-    init(onToggle: @escaping () -> Void, onSettings: @escaping () -> Void, onAddRepo: @escaping () -> Void) {
-        self.onToggle = onToggle
-        self.onSettings = onSettings
-        self.onAddRepo = onAddRepo
-        setupStatusItem()
-    }
-
-    private func setupStatusItem() {
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-
-        if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "bird.fill", accessibilityDescription: "OpenBird")
-            button.image?.size = NSSize(width: 16, height: 16)
-            button.image?.isTemplate = true
-        }
-
-        setupMenu()
-    }
-
-    private func setupMenu() {
-        let menu = NSMenu()
-
-        let toggleItem = NSMenuItem(title: "Show/Hide Window", action: #selector(toggleAction), keyEquivalent: "")
-        toggleItem.target = self
-        menu.addItem(toggleItem)
-
-        menu.addItem(NSMenuItem.separator())
-
-        let addItem = NSMenuItem(title: "Add Repository...", action: #selector(addAction), keyEquivalent: "")
-        addItem.target = self
-        menu.addItem(addItem)
-
-        let settingsItem = NSMenuItem(title: "Settings...", action: #selector(settingsAction), keyEquivalent: ",")
-        settingsItem.target = self
-        menu.addItem(settingsItem)
-
-        menu.addItem(NSMenuItem.separator())
-
-        let quitItem = NSMenuItem(title: "Quit OpenBird", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
-        menu.addItem(quitItem)
-
-        statusItem?.menu = menu
-    }
-
-    @objc private func toggleAction() { onToggle() }
-    @objc private func addAction() { onAddRepo() }
-    @objc private func settingsAction() { onSettings() }
 }

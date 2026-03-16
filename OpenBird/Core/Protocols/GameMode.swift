@@ -46,6 +46,7 @@ protocol GameMode {
 class GameModeScene: SKScene {
     var creatures: [UUID: CreatureNode] = [:]
     var selectedCreatureID: UUID?
+    private(set) var isJamModeActive = false
 
     // Callbacks for context menu actions
     var onRenameCreature: ((UUID, String) -> Void)?
@@ -59,7 +60,11 @@ class GameModeScene: SKScene {
     func addCreature(_ node: CreatureNode, for repoID: UUID) {
         creatures[repoID] = node
         addChild(node)
-        node.startIdleBehavior(in: size)
+        if isJamModeActive {
+            node.beginJamMode()
+        } else {
+            node.startIdleBehavior(in: size)
+        }
     }
 
     func removeCreature(for repoID: UUID) {
@@ -116,6 +121,26 @@ class GameModeScene: SKScene {
     func updateAmbientEffects() {}
 
     func updateBackground() {}
+
+    func setJamModeActive(_ active: Bool) {
+        guard active != isJamModeActive else { return }
+        isJamModeActive = active
+
+        for (_, node) in creatures {
+            if active {
+                node.beginJamMode()
+            } else {
+                node.endJamMode(resumeIn: size)
+            }
+        }
+    }
+
+    func updateJamMode(level: CGFloat, beat: CGFloat) {
+        guard isJamModeActive else { return }
+        for (_, node) in creatures {
+            node.updateJam(level: level, beat: beat)
+        }
+    }
 
     func selectCreature(_ repoID: UUID?) {
         // Deselect previous
@@ -358,6 +383,11 @@ class CreatureNode: SKSpriteNode {
 
     func startIdleBehavior(in sceneSize: CGSize) {}
     func playFeedAnimation() {}
+    func beginJamMode() {}
+    func endJamMode(resumeIn sceneSize: CGSize) {
+        startIdleBehavior(in: sceneSize)
+    }
+    func updateJam(level: CGFloat, beat: CGFloat) {}
 
     func updateAppearance(_ creature: Creature) {
         self.creatureState = creature

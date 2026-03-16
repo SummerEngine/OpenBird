@@ -53,6 +53,18 @@ final class AppSettings: ObservableObject {
     @Published var sceneBackgroundStyle: String {
         didSet { defaults.set(sceneBackgroundStyle, forKey: "sceneBackgroundStyle") }
     }
+    @Published var accountDisplayName: String {
+        didSet { defaults.set(accountDisplayName, forKey: "accountDisplayName") }
+    }
+    @Published var accountEmail: String {
+        didSet { defaults.set(accountEmail, forKey: "accountEmail") }
+    }
+    @Published var isSignedIn: Bool {
+        didSet { defaults.set(isSignedIn, forKey: "isSignedIn") }
+    }
+    @Published var hasJamAccess: Bool {
+        didSet { defaults.set(hasJamAccess, forKey: "hasJamAccess") }
+    }
     @Published var jamModeAudioReactiveEnabled: Bool {
         didSet { defaults.set(jamModeAudioReactiveEnabled, forKey: "jamModeAudioReactiveEnabled") }
     }
@@ -96,6 +108,39 @@ final class AppSettings: ObservableObject {
         self.showAmbientEffects = ambientEffectsEnabled
         self.showWindowBorder = defaults.object(forKey: "showWindowBorder") as? Bool ?? true
         self.sceneBackgroundStyle = normalizedBackground
+        self.accountDisplayName = defaults.string(forKey: "accountDisplayName") ?? ""
+        self.accountEmail = defaults.string(forKey: "accountEmail") ?? ""
+        self.isSignedIn = defaults.object(forKey: "isSignedIn") as? Bool ?? false
+        self.hasJamAccess = defaults.object(forKey: "hasJamAccess") as? Bool ?? false
         self.jamModeAudioReactiveEnabled = defaults.object(forKey: "jamModeAudioReactiveEnabled") as? Bool ?? false
+    }
+
+    var accountLabel: String {
+        if !accountDisplayName.isEmpty {
+            return accountDisplayName
+        }
+        if !accountEmail.isEmpty {
+            return accountEmail
+        }
+        return "OpenBird Account"
+    }
+
+    func activatePreviewAccount(displayName: String, email: String) {
+        accountDisplayName = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        accountEmail = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        isSignedIn = true
+        hasJamAccess = true
+    }
+
+    func signOutAccount() {
+        accountDisplayName = ""
+        accountEmail = ""
+        isSignedIn = false
+        hasJamAccess = false
+        jamModeAudioReactiveEnabled = false
+
+        if currentGameMode == GameModeID.jam.rawValue {
+            currentGameMode = GameModeID.fish.rawValue
+        }
     }
 }

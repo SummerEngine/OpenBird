@@ -22,5 +22,15 @@
 	<false/>
 	<key>NSSupportsSuddenTermination</key>
 	<false/>
+	<key>SUFeedURL</key>
+	<string>https://www.openbird.app/api/desktop/sparkle/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>+F3ZI9mwgUf402WzCgnd96eQrRzS892RqjyvJjTMVo8=</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUScheduledCheckInterval</key>
+	<integer>3600</integer>
+	<key>SUAllowsAutomaticUpdates</key>
+	<true/>
 </dict>
 </plist>

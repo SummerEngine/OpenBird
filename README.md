@@ -1,6 +1,6 @@
 # OpenBird
 
-A desktop aquarium where your git repositories come to life as virtual fish. Every commit feeds your creatures -- keep coding to watch them grow, or neglect them and watch them fade.
+A desktop companion where your git repositories come to life as little virtual friends. Every commit feeds your creatures, helps them grow, and keeps your workspace feeling alive.
 
 Built with SwiftUI and SpriteKit for macOS.
 
@@ -11,13 +11,13 @@ Download the latest `.dmg` from [Releases](https://github.com/SummerEngine/OpenB
 ## How It Works
 
 1. **Add a git repository** -- OpenBird watches it for new commits using macOS file system events
-2. **A fish appears** -- each repo gets its own creature with a name and color you choose
-3. **Commits = food** -- every time you commit, your fish gets fed and grows
-4. **Neglect has consequences** -- hunger increases over time, happiness drops, fish shrink and desaturate. After 30 days without a commit, they die
+2. **A friend appears** -- each repo gets its own creature with a name and look of its own
+3. **Commits = food** -- every time you commit, your little friend gets fed and grows
+4. **Neglect has consequences** -- hunger increases over time, happiness drops, creatures shrink and desaturate. After 30 days without a commit, they die
 
 ### Creature Lifecycle
 
-Fish progress through stages based on total commits:
+Creatures progress through stages based on total commits:
 
 | Stage | Commits |
 |-------|---------|
@@ -67,14 +67,15 @@ xcodebuild -project OpenBird.xcodeproj -scheme OpenBird -configuration Release b
 
 ```
 OpenBird/
-├── Assets/              # Animations, backgrounds, fish sprites
+├── Assets/              # Animations, backgrounds, creature art
 ├── Core/
 │   ├── Models/          # Creature, Repository, CommitRecord, AppSettings
 │   ├── Services/        # GitMonitor, CreatureLifecycle, Persistence, Hotkey
 │   ├── Protocols/       # GameMode base classes
 │   └── Quests/          # Quest definitions and tracking
 ├── GameModes/
-│   └── Fish/            # Aquarium scene, fish rendering, animations
+│   ├── Bird/            # Default desktop friend mode
+│   └── Fish/            # Additional creature mode and shared ideas
 ├── Views/               # Settings, repo management, activity log
 └── Utilities/           # Git helpers, color parsing
 ```
@@ -83,7 +84,7 @@ OpenBird/
 
 OpenBird lives in your menu bar. Click the bird icon to:
 
-- **Show/Hide** the aquarium window (or use the global hotkey, default `Cmd+Shift+T`)
+- **Show/Hide** the companion window (or use the global hotkey, default `Cmd+Shift+T`)
 - **Add repositories** to start tracking
 - **Open settings** to customize behavior
 
@@ -95,9 +96,9 @@ OpenBird lives in your menu bar. Click the bird icon to:
 - Follow across macOS Spaces
 - Customize the global hotkey
 
-### Interacting with Fish
+### Interacting with Creatures
 
-- **Click** a fish to select it
+- **Click** a creature to select it
 - **Right-click** for options: rename, view commit history
 
 ## Data Storage
@@ -114,7 +115,7 @@ No accounts, no cloud, no telemetry.
 ## Tech Stack
 
 - **SwiftUI** -- settings and management UI
-- **SpriteKit** -- aquarium rendering and animation
+- **SpriteKit** -- creature rendering and animation
 - **FSEvents** -- native macOS file system watching for git changes
 - **Carbon** -- global keyboard shortcut registration
 - Zero external dependencies

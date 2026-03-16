@@ -1,9 +1,12 @@
 import SpriteKit
+import QuartzCore
 
 final class FishCreatureNode: CreatureNode {
     private let nameLabel: SKLabelNode
     private let nameShadow: SKLabelNode
     private var facingRight = true
+    private var isJamming = false
+    private var jamBasePosition = CGPoint.zero
 
     init(creature: Creature, name: String, color: NSColor) {
         nameLabel = SKLabelNode(text: name)
@@ -191,6 +194,7 @@ final class FishCreatureNode: CreatureNode {
     }
 
     override func startIdleBehavior(in sceneSize: CGSize) {
+        isJamming = false
         guard creatureState.isAlive else {
             zRotation = .pi
             alpha = 0.4
@@ -201,6 +205,51 @@ final class FishCreatureNode: CreatureNode {
         }
 
         swimToRandomPoint(in: sceneSize)
+    }
+
+    override func beginJamMode() {
+        guard creatureState.isAlive else { return }
+
+        isJamming = true
+        removeAction(forKey: "swimming")
+        removeAction(forKey: "swimLoop")
+        removeAction(forKey: "hovering")
+        removeAction(forKey: "hoverTimer")
+        removeAction(forKey: "schooling")
+        jamBasePosition = position
+        zRotation = facingRight ? .pi / 3 : -.pi / 3
+    }
+
+    override func endJamMode(resumeIn sceneSize: CGSize) {
+        guard isJamming else {
+            startIdleBehavior(in: sceneSize)
+            return
+        }
+
+        isJamming = false
+        position = jamBasePosition == .zero ? position : jamBasePosition
+        zRotation = 0
+        startIdleBehavior(in: sceneSize)
+    }
+
+    override func updateJam(level: CGFloat, beat: CGFloat) {
+        guard isJamming else { return }
+
+        let time = CGFloat(CACurrentMediaTime())
+        let groove = level * 0.5
+        let bounce = 0.8 + groove * 1.8 + beat * 5.2
+        let sway = sin(time * 2.4) * (0.025 + groove * 0.035) + beat * 0.035
+        let upright = facingRight ? CGFloat.pi / 3 : -CGFloat.pi / 3
+
+        position = CGPoint(
+            x: jamBasePosition.x + sin(time * 1.6) * (0.35 + groove * 0.75),
+            y: jamBasePosition.y + abs(sin(time * 2.2)) * bounce
+        )
+        zRotation = upright + sway
+
+        let glowNode = childNode(withName: "glow") as? SKShapeNode
+        glowNode?.glowWidth = beat * 5
+        glowNode?.alpha = creatureState.isAlive ? 0.16 + groove * 0.08 + beat * 0.14 : 0.08
     }
 
     private func swimToRandomPoint(in sceneSize: CGSize) {

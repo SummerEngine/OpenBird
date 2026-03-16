@@ -26,7 +26,11 @@ final class BirdScene: GameModeScene {
             creature.removeAction(forKey: "swimLoop")
             creature.removeAction(forKey: "hovering")
             creature.removeAction(forKey: "hoverTimer")
-            creature.startIdleBehavior(in: size)
+            if isJamModeActive {
+                creature.beginJamMode()
+            } else {
+                creature.startIdleBehavior(in: size)
+            }
         }
 
         updateBackground()
