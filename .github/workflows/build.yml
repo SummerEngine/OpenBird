@@ -1,0 +1,25 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+
+      - name: Build
+        run: xcodebuild -project OpenBird.xcodeproj -scheme OpenBird -configuration Release -derivedDataPath build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenBird
+          path: build/Build/Products/Release/OpenBird.app
