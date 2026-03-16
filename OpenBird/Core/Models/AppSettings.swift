@@ -53,6 +53,9 @@ final class AppSettings: ObservableObject {
     @Published var sceneBackgroundStyle: String {
         didSet { defaults.set(sceneBackgroundStyle, forKey: "sceneBackgroundStyle") }
     }
+    @Published var jamModeAudioReactiveEnabled: Bool {
+        didSet { defaults.set(jamModeAudioReactiveEnabled, forKey: "jamModeAudioReactiveEnabled") }
+    }
 
     private init() {
         let screenWidth = NSScreen.main?.frame.width ?? 1440
@@ -93,5 +96,6 @@ final class AppSettings: ObservableObject {
         self.showAmbientEffects = ambientEffectsEnabled
         self.showWindowBorder = defaults.object(forKey: "showWindowBorder") as? Bool ?? true
         self.sceneBackgroundStyle = normalizedBackground
+        self.jamModeAudioReactiveEnabled = defaults.object(forKey: "jamModeAudioReactiveEnabled") as? Bool ?? false
     }
 }

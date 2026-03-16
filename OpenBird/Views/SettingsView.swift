@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @ObservedObject var settings = AppSettings.shared
-    @ObservedObject var gitMonitor = GitMonitorService.shared
-    @ObservedObject var lifecycle = CreatureLifecycleService.shared
-    @ObservedObject var quests = QuestService.shared
+    @ObservedObject private var gitMonitor = GitMonitorService.shared
+    @ObservedObject private var lifecycle = CreatureLifecycleService.shared
+    @ObservedObject private var quests = QuestService.shared
+
     @State private var showingAddRepo = false
     @State private var selectedTab = 0
     @State private var expandedRepoID: UUID?
@@ -19,11 +19,11 @@ struct SettingsView: View {
                 .tabItem { Label("Quests", systemImage: "star") }
                 .tag(1)
 
-            preferencesTab
+            SettingsPreferencesTab()
                 .tabItem { Label("Preferences", systemImage: "gearshape") }
                 .tag(2)
 
-            roadmapTab
+            SettingsRoadmapTab()
                 .tabItem { Label("Roadmap", systemImage: "lightbulb") }
                 .tag(3)
         }
@@ -34,8 +34,6 @@ struct SettingsView: View {
             }
         }
     }
-
-    // MARK: - Repositories Tab
 
     private var repositoriesTab: some View {
         VStack(spacing: 0) {
@@ -314,8 +312,6 @@ struct SettingsView: View {
         return .green
     }
 
-    // MARK: - Quests Tab
-
     private var questsTab: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -432,130 +428,4 @@ struct SettingsView: View {
         .padding(.vertical, 2)
         .opacity(completed ? 0.6 : 1.0)
     }
-
-    // MARK: - Preferences Tab
-
-    private var preferencesTab: some View {
-        Form {
-            Section("General") {
-                Toggle("Show window on launch", isOn: $settings.showOnLaunch)
-                Toggle("Play sounds on commit", isOn: $settings.enableSounds)
-                Toggle("Show friend names", isOn: $settings.showCreatureNames)
-                Toggle("Show on all Spaces", isOn: $settings.followAcrossSpaces)
-                    .help("Keep the tank visible when switching between macOS Spaces")
-            }
-
-            Section("Friends") {
-                HStack {
-                    Text("Movement speed")
-                    Slider(value: $settings.movementSpeed, in: 0.3...2.5, step: 0.1)
-                    Text(String(format: "%.1fx", settings.movementSpeed))
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .frame(width: 35)
-                }
-                Text("Commits grow your friends over time. Manual feeding only gives them a small happiness boost.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-
-            Section("World") {
-                Picker("Mode", selection: $settings.currentGameMode) {
-                    ForEach(GameModeID.allCases) { mode in
-                        Label(mode.displayName, systemImage: mode.iconName)
-                            .tag(mode.rawValue)
-                    }
-                }
-                Text(modeDescription)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-
-                Toggle("Show window border", isOn: $settings.showWindowBorder)
-                Toggle("Ambient effects", isOn: $settings.showAmbientEffects)
-                    .help("Bubbles in Aquarium, breeze lines in Aviary")
-                Picker("Backdrop", selection: $settings.sceneBackgroundStyle) {
-                    Text("Themed").tag("themed")
-                    Text("Night").tag("night")
-                    Text("Clear").tag("clear")
-                }
-                Text("Backdrop and effects adapt to the selected world.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-
-            Section("Keyboard Shortcut") {
-                Text("Cmd+Shift+T to toggle window")
-                    .foregroundColor(.secondary)
-                    .font(.caption)
-            }
-
-            Section("About") {
-                HStack {
-                    Text("OpenBird")
-                        .fontWeight(.medium)
-                    Text("v1.0")
-                        .foregroundColor(.secondary)
-                }
-                Text("Your repos, alive.")
-                    .foregroundColor(.secondary)
-                    .font(.caption)
-            }
-        }
-        .formStyle(.grouped)
-        .padding()
-    }
-
-    // MARK: - Roadmap Tab
-
-    private var roadmapTab: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Roadmap")
-                    .font(.headline)
-                    .padding(.bottom, 4)
-
-                ideaRow("bird", "More Worlds", "Expand beyond aquarium and aviary into new habitats with their own art, behaviors, and commit reactions.")
-                ideaRow("cursorarrow.click.2", "Click Actions", "Bind what happens when you click a friend. Open a URL, launch your editor to the latest commit, open Claude Code.")
-                ideaRow("message", "Talk to Your Friends", "Send messages to friends via MCP. They relay prompts to Cursor, Claude Code, or any connected agent.")
-                ideaRow("network", "Orchestrator Mode", "Your friends become workers. Assign tasks, watch them build. Like Warcraft peons for your codebase.")
-                ideaRow("cube", "3D Rendering", "Switch from 2D SpriteKit to SceneKit or Metal for a 3D terrarium/vivarium experience.")
-                ideaRow("paintpalette", "Customization", "Custom colors, species based on primary language, name plates, accessories.")
-                ideaRow("speaker.wave.2", "Sound Packs", "Different sound effects per game mode. Aquarium bubbles, bird chirps, orc grunts.")
-                ideaRow("globe", "Leaderboard", "Compare your feeding streaks with friends. Longest-living friend wins.")
-                ideaRow("arrow.triangle.branch", "Branch Awareness", "Friends react differently to main vs feature branches. Merge = celebration.")
-                ideaRow("person.2", "Multi-user", "See teammates' friends in a shared pond. Social coding visualization.")
-                ideaRow("arrow.up.circle", "Evolution", "Friends evolve through stages based on commit milestones. Visual transformations at each tier.")
-                ideaRow("tshirt", "Wearables", "Earn cosmetic items for your friends by completing quests. Hats, accessories, effects.")
-            }
-            .padding(20)
-        }
-    }
-
-    private func ideaRow(_ icon: String, _ title: String, _ description: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundColor(.accentColor)
-                .frame(width: 24)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .fontWeight(.medium)
-                Text(description)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-        }
-        .padding(.vertical, 2)
-    }
-
-    private var modeDescription: String {
-        switch GameModeID(rawValue: settings.currentGameMode) ?? .fish {
-        case .fish:
-            return "Aquarium keeps the friends in water, with calmer swim paths and optional bubbles."
-        case .bird:
-            return "Aviary gives each repo a bird that perches, hops, and takes a flight loop when a commit lands."
-        }
-    }
-
 }

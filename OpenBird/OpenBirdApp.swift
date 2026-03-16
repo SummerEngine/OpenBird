@@ -27,6 +27,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var cancellables = Set<AnyCancellable>()
     private let fishMode = FishMode()
     private let birdMode = BirdMode()
+    private let jamMode = JamMode()
     private var settingsWindow: NSWindow?
     private var commitsWindow: NSWindow?
     private var addRepoWindow: NSWindow?
@@ -39,6 +40,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Initialize services
         CreatureLifecycleService.shared.start()
         GitMonitorService.shared.loadAndStartWatching()
+        SystemAudioMonitorService.shared.checkPermissionStatus()
 
         // Setup tank window
         tankWindow = TankWindow()
@@ -112,6 +114,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
             .store(in: &cancellables)
 
+        AppSettings.shared.$jamModeAudioReactiveEnabled
+            .dropFirst()
+            .sink { [weak self] _ in
+                self?.refreshSystemAudioMonitoring()
+            }
+            .store(in: &cancellables)
+
         AppSettings.shared.$followAcrossSpaces
             .dropFirst()
             .sink { [weak self] _ in
@@ -173,6 +182,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         GitMonitorService.shared.stopAll()
         CreatureLifecycleService.shared.stop()
+        SystemAudioMonitorService.shared.stop()
         HotkeyService.shared.unregister()
     }
 
@@ -213,6 +223,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return fishMode
         case .bird:
             return birdMode
+        case .jam:
+            return jamMode
         }
     }
 
@@ -230,6 +242,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if !tankWindow.isVisible {
             tankWindow.skView.isPaused = true
         }
+        refreshSystemAudioMonitoring()
     }
 
     private func wireSceneCallbacks(_ scene: GameModeScene) {
@@ -265,6 +278,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             cancelScheduledReveal()
         }
         tankWindow.toggle()
+        refreshSystemAudioMonitoring()
     }
 
     private func hideTank(for duration: TimeInterval) {
@@ -273,12 +287,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if tankWindow.isVisible {
             tankWindow.toggle()
         }
+        refreshSystemAudioMonitoring()
 
         let reveal = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
             self.scheduledRevealWorkItem = nil
             if !self.tankWindow.isVisible {
                 self.tankWindow.toggle()
+                self.refreshSystemAudioMonitoring()
             }
         }
 
@@ -402,6 +418,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         content.sound = .default
         let request = UNNotificationRequest(identifier: "quest-\(quest.id)", content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
+    }
+
+    private func refreshSystemAudioMonitoring() {
+        let shouldMonitor = AppSettings.shared.currentGameMode == GameModeID.jam.rawValue
+            && AppSettings.shared.jamModeAudioReactiveEnabled
+            && tankWindow.isVisible
+
+        if shouldMonitor {
+            SystemAudioMonitorService.shared.startIfPossible()
+        } else {
+            SystemAudioMonitorService.shared.stop()
+        }
     }
 }
 

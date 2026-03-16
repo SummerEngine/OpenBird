@@ -4,6 +4,7 @@ import AppKit
 enum GameModeID: String, CaseIterable, Identifiable {
     case fish
     case bird
+    case jam
 
     var id: String { rawValue }
 
@@ -13,6 +14,8 @@ enum GameModeID: String, CaseIterable, Identifiable {
             return "Aquarium"
         case .bird:
             return "Aviary"
+        case .jam:
+            return "Jam Mode"
         }
     }
 
@@ -22,6 +25,8 @@ enum GameModeID: String, CaseIterable, Identifiable {
             return "water.waves"
         case .bird:
             return "bird"
+        case .jam:
+            return "waveform"
         }
     }
 }
