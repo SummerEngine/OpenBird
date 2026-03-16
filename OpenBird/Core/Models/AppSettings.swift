@@ -44,15 +44,40 @@ final class AppSettings: ObservableObject {
     @Published var followAcrossSpaces: Bool {
         didSet { defaults.set(followAcrossSpaces, forKey: "followAcrossSpaces") }
     }
-    @Published var showBubbles: Bool {
-        didSet { defaults.set(showBubbles, forKey: "showBubbles") }
+    @Published var showAmbientEffects: Bool {
+        didSet { defaults.set(showAmbientEffects, forKey: "showAmbientEffects") }
     }
-    @Published var tankBackground: String {
-        didSet { defaults.set(tankBackground, forKey: "tankBackground") }
+    @Published var showWindowBorder: Bool {
+        didSet { defaults.set(showWindowBorder, forKey: "showWindowBorder") }
+    }
+    @Published var sceneBackgroundStyle: String {
+        didSet { defaults.set(sceneBackgroundStyle, forKey: "sceneBackgroundStyle") }
     }
 
     private init() {
         let screenWidth = NSScreen.main?.frame.width ?? 1440
+        let storedBackground = defaults.string(forKey: "sceneBackgroundStyle")
+            ?? defaults.string(forKey: "tankBackground")
+            ?? "ocean"
+        let normalizedBackground: String
+        switch storedBackground {
+        case "transparent", "clear":
+            normalizedBackground = "clear"
+        case "dark", "sunset":
+            normalizedBackground = "night"
+        default:
+            normalizedBackground = "themed"
+        }
+
+        let ambientEffectsEnabled: Bool
+        if defaults.object(forKey: "showAmbientEffects") != nil {
+            ambientEffectsEnabled = defaults.bool(forKey: "showAmbientEffects")
+        } else if defaults.object(forKey: "showBubbles") != nil {
+            ambientEffectsEnabled = defaults.bool(forKey: "showBubbles")
+        } else {
+            ambientEffectsEnabled = true
+        }
+
         self.windowX = defaults.object(forKey: "windowX") as? Double ?? Double(screenWidth - 420)
         self.windowY = defaults.object(forKey: "windowY") as? Double ?? 100
         self.windowWidth = defaults.object(forKey: "windowWidth") as? Double ?? 400
@@ -65,7 +90,8 @@ final class AppSettings: ObservableObject {
         self.showCreatureNames = defaults.object(forKey: "showCreatureNames") as? Bool ?? true
         self.movementSpeed = defaults.object(forKey: "movementSpeed") as? Double ?? 1.0
         self.followAcrossSpaces = defaults.object(forKey: "followAcrossSpaces") as? Bool ?? true
-        self.showBubbles = defaults.object(forKey: "showBubbles") as? Bool ?? true
-        self.tankBackground = defaults.string(forKey: "tankBackground") ?? "ocean"
+        self.showAmbientEffects = ambientEffectsEnabled
+        self.showWindowBorder = defaults.object(forKey: "showWindowBorder") as? Bool ?? true
+        self.sceneBackgroundStyle = normalizedBackground
     }
 }

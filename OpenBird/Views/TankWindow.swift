@@ -5,6 +5,7 @@ import SpriteKit
 
 final class TankSKView: SKView {
     private var hoverTrackingArea: NSTrackingArea?
+    private var isHovering = false
 
     override func updateTrackingAreas() {
         super.updateTrackingAreas()
@@ -21,15 +22,13 @@ final class TankSKView: SKView {
     }
 
     override func mouseEntered(with event: NSEvent) {
-        wantsLayer = true
-        layer?.borderColor = NSColor(white: 1.0, alpha: 0.4).cgColor
-        layer?.borderWidth = 1.5
+        isHovering = true
+        refreshChrome()
     }
 
     override func mouseExited(with event: NSEvent) {
-        wantsLayer = true
-        layer?.borderColor = NSColor(white: 1.0, alpha: 0.1).cgColor
-        layer?.borderWidth = 1.0
+        isHovering = false
+        refreshChrome()
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -49,6 +48,22 @@ final class TankSKView: SKView {
     override var acceptsFirstResponder: Bool { true }
 
     override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
+
+    func refreshChrome() {
+        wantsLayer = true
+        layer?.cornerRadius = 8
+
+        guard AppSettings.shared.showWindowBorder else {
+            layer?.borderColor = NSColor.clear.cgColor
+            layer?.borderWidth = 0
+            return
+        }
+
+        let alpha: CGFloat = isHovering ? 0.38 : 0.1
+        let width: CGFloat = isHovering ? 1.5 : 1.0
+        layer?.borderColor = NSColor(white: 1.0, alpha: alpha).cgColor
+        layer?.borderWidth = width
+    }
 }
 
 // MARK: - Tank Window
@@ -99,9 +114,7 @@ final class TankWindow: NSPanel {
 
         // Initial border state (subtle)
         skView.wantsLayer = true
-        skView.layer?.borderColor = NSColor(white: 1.0, alpha: 0.1).cgColor
-        skView.layer?.borderWidth = 1.0
-        skView.layer?.cornerRadius = 8
+        skView.refreshChrome()
 
         // Save position on move/resize — use block-based observers (auto-cleanup)
         moveObserver = NotificationCenter.default.addObserver(
@@ -160,6 +173,10 @@ final class TankWindow: NSPanel {
         } else {
             collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
         }
+    }
+
+    func updateChrome() {
+        skView.refreshChrome()
     }
 
     private func saveFrame() {

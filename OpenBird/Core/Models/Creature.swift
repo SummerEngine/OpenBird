@@ -41,7 +41,7 @@ struct Creature: Codable {
         guard isAlive else { return }
         hunger = max(0, hunger - 0.3)
         happiness = min(1.0, happiness + 0.2)
-        size = min(2.5, size + 0.015)
+        size = min(2.5, size + 0.006)
         totalCommitsFed += 1
         lastFedDate = Date()
         updateStreak()

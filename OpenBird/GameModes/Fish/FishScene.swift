@@ -30,23 +30,21 @@ final class FishScene: GameModeScene {
     private func setupAmbience() {
         updateBackground()
 
-        if AppSettings.shared.showBubbles {
-            spawnBubbles()
-        }
+        updateAmbientEffects()
     }
 
-    func updateBackground() {
+    override func updateBackground() {
         childNode(withName: "backdrop")?.removeFromParent()
 
-        let bg = AppSettings.shared.tankBackground
-        guard bg != "transparent" else { return }
+        let style = AppSettings.shared.sceneBackgroundStyle
+        guard style != "clear" else { return }
 
         let backdrop = SKShapeNode(rectOf: CGSize(width: 4000, height: 4000), cornerRadius: 8)
-        switch bg {
-        case "dark":
-            backdrop.fillColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.3)
-        default: // "ocean"
-            backdrop.fillColor = NSColor(calibratedRed: 0.02, green: 0.05, blue: 0.12, alpha: 0.12)
+        switch style {
+        case "night":
+            backdrop.fillColor = NSColor(calibratedRed: 0.01, green: 0.03, blue: 0.08, alpha: 0.34)
+        default:
+            backdrop.fillColor = NSColor(calibratedRed: 0.02, green: 0.08, blue: 0.16, alpha: 0.15)
         }
         backdrop.strokeColor = .clear
         backdrop.position = CGPoint(x: size.width / 2, y: size.height / 2)
@@ -55,8 +53,8 @@ final class FishScene: GameModeScene {
         addChild(backdrop)
     }
 
-    func updateBubbles() {
-        if AppSettings.shared.showBubbles {
+    override func updateAmbientEffects() {
+        if AppSettings.shared.showAmbientEffects {
             // Only start if not already running
             if action(forKey: "bubbleSpawner") == nil {
                 spawnBubbles()
@@ -72,7 +70,7 @@ final class FishScene: GameModeScene {
         let spawnAction = SKAction.run { [weak self] in
             self?.createBubble()
         }
-        let wait = SKAction.wait(forDuration: 3.0, withRange: 4.0)
+        let wait = SKAction.wait(forDuration: 4.2, withRange: 3.0)
         run(SKAction.repeatForever(SKAction.sequence([spawnAction, wait])), withKey: "bubbleSpawner")
     }
 
