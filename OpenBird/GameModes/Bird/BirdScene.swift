@@ -150,6 +150,46 @@ final class BirdScene: GameModeScene {
         addChild(tree)
     }
 
+    override func triggerFeedAnimation(for repoID: UUID, commit: CommitRecord) {
+        guard let creature = creatures[repoID] else { return }
+
+        let burst = SKShapeNode(circleOfRadius: 12)
+        burst.fillColor = NSColor(calibratedRed: 1.0, green: 0.9, blue: 0.48, alpha: 0.3)
+        burst.strokeColor = NSColor(calibratedRed: 1.0, green: 0.94, blue: 0.72, alpha: 0.65)
+        burst.lineWidth = 1.5
+        burst.position = creature.position
+        burst.zPosition = 8
+        addChild(burst)
+        burst.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: 3.2, duration: 0.45),
+                SKAction.fadeOut(withDuration: 0.45)
+            ]),
+            .removeFromParent()
+        ]))
+
+        creature.playFeedAnimation()
+
+        let label = SKLabelNode(text: "Commit: \(String(commit.message.prefix(36)))")
+        label.fontSize = 10
+        label.fontColor = NSColor(white: 1.0, alpha: 0.96)
+        label.fontName = "Menlo-Bold"
+        label.horizontalAlignmentMode = .center
+        label.position = CGPoint(x: creature.position.x, y: creature.position.y + 34)
+        label.alpha = 0
+        label.zPosition = 9
+        addChild(label)
+        label.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.fadeIn(withDuration: 0.18),
+                SKAction.moveBy(x: 0, y: 10, duration: 0.18)
+            ]),
+            SKAction.wait(forDuration: 2.2),
+            SKAction.fadeOut(withDuration: 0.45),
+            .removeFromParent()
+        ]))
+    }
+
     override func updateAmbientEffects() {
         if AppSettings.shared.showAmbientEffects {
             if action(forKey: "breezeSpawner") == nil {

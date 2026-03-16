@@ -7,7 +7,44 @@ struct CommitInfo {
     let date: Date
 }
 
+struct GitRepositoryInfo {
+    let gitDir: String
+    let commonDir: String
+
+    var watchPaths: [String] {
+        Array(Set([gitDir, commonDir])).sorted()
+    }
+}
+
 enum GitHelper {
+    static func repositoryInfo(at path: String) -> GitRepositoryInfo? {
+        let gitPath = (path as NSString).appendingPathComponent(".git")
+        var isDirectory: ObjCBool = false
+
+        guard FileManager.default.fileExists(atPath: gitPath, isDirectory: &isDirectory) else {
+            return nil
+        }
+
+        if isDirectory.boolValue {
+            return GitRepositoryInfo(gitDir: gitPath, commonDir: gitPath)
+        }
+
+        guard let pointer = try? String(contentsOfFile: gitPath, encoding: .utf8)
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+              pointer.hasPrefix("gitdir:") else {
+            return nil
+        }
+
+        let rawGitDir = pointer.replacingOccurrences(of: "gitdir:", with: "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let gitDirURL = URL(fileURLWithPath: rawGitDir, relativeTo: URL(fileURLWithPath: path))
+            .standardizedFileURL
+        let gitDir = gitDirURL.path
+        let commonDir = resolvedCommonDir(from: gitDir) ?? gitDir
+
+        return GitRepositoryInfo(gitDir: gitDir, commonDir: commonDir)
+    }
+
     static func latestCommit(at repoPath: String) -> CommitInfo? {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/git")
@@ -49,12 +86,23 @@ enum GitHelper {
     }
 
     static func isGitRepository(at path: String) -> Bool {
-        let gitDir = (path as NSString).appendingPathComponent(".git")
-        var isDir: ObjCBool = false
-        return FileManager.default.fileExists(atPath: gitDir, isDirectory: &isDir) && isDir.boolValue
+        repositoryInfo(at: path) != nil
     }
 
     static func repositoryName(at path: String) -> String {
         return URL(fileURLWithPath: path).lastPathComponent
+    }
+
+    private static func resolvedCommonDir(from gitDir: String) -> String? {
+        let commonDirFile = (gitDir as NSString).appendingPathComponent("commondir")
+        guard let relativeCommonDir = try? String(contentsOfFile: commonDirFile, encoding: .utf8)
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+              !relativeCommonDir.isEmpty else {
+            return nil
+        }
+
+        return URL(fileURLWithPath: relativeCommonDir, relativeTo: URL(fileURLWithPath: gitDir))
+            .standardizedFileURL
+            .path
     }
 }

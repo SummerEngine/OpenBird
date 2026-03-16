@@ -15,8 +15,7 @@ final class GitMonitorService: ObservableObject {
     private init() {}
 
     func startWatching(_ repo: Repository) {
-        let gitDir = repo.path + "/.git"
-        guard FileManager.default.fileExists(atPath: gitDir) else { return }
+        guard let info = GitHelper.repositoryInfo(at: repo.path) else { return }
 
         // Use Unmanaged for proper memory management
         let context = RepoContext(repoID: repo.id, path: repo.path)
@@ -30,7 +29,7 @@ final class GitMonitorService: ObservableObject {
             copyDescription: nil
         )
 
-        let paths = [gitDir] as CFArray
+        let paths = info.watchPaths as CFArray
         guard let stream = FSEventStreamCreate(
             nil,
             fsEventsCallback,
@@ -131,7 +130,9 @@ final class GitMonitorService: ObservableObject {
     func loadAndStartWatching() {
         repositories = PersistenceService.shared.loadRepositories()
         for repo in repositories {
-            startWatching(repo)
+            if GitHelper.repositoryInfo(at: repo.path) != nil {
+                startWatching(repo)
+            }
         }
     }
 }

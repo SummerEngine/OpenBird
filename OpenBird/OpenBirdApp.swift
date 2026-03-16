@@ -30,6 +30,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var settingsWindow: NSWindow?
     private var commitsWindow: NSWindow?
     private var addRepoWindow: NSWindow?
+    private var scheduledRevealWorkItem: DispatchWorkItem?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Request notification permission for quest completion
@@ -247,6 +248,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         scene.onHideWindow = { [weak self] in
             self?.toggleTank()
         }
+        scene.onHideWindowForHour = { [weak self] in
+            self?.hideTank(for: 3600)
+        }
         scene.onResetSize = { [weak self] in
             self?.tankWindow.resetToDefaultSize()
         }
@@ -255,7 +259,36 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Actions
 
     private func toggleTank() {
+        if tankWindow.isVisible {
+            cancelScheduledReveal()
+        } else {
+            cancelScheduledReveal()
+        }
         tankWindow.toggle()
+    }
+
+    private func hideTank(for duration: TimeInterval) {
+        cancelScheduledReveal()
+
+        if tankWindow.isVisible {
+            tankWindow.toggle()
+        }
+
+        let reveal = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+            self.scheduledRevealWorkItem = nil
+            if !self.tankWindow.isVisible {
+                self.tankWindow.toggle()
+            }
+        }
+
+        scheduledRevealWorkItem = reveal
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: reveal)
+    }
+
+    private func cancelScheduledReveal() {
+        scheduledRevealWorkItem?.cancel()
+        scheduledRevealWorkItem = nil
     }
 
     private func openSettings() {

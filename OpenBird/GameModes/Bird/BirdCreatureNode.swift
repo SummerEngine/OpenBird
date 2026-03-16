@@ -44,10 +44,34 @@ final class BirdCreatureNode: CreatureNode {
         shadow.name = "shadow"
         addChild(shadow)
 
+        let leftCrestPath = CGMutablePath()
+        leftCrestPath.move(to: CGPoint(x: -8, y: 15))
+        leftCrestPath.addQuadCurve(to: CGPoint(x: -1, y: 20), control: CGPoint(x: -6, y: 22))
+        leftCrestPath.addLine(to: CGPoint(x: 0, y: 13))
+        leftCrestPath.closeSubpath()
+
+        let leftCrest = SKShapeNode(path: leftCrestPath)
+        leftCrest.strokeColor = .clear
+        leftCrest.zPosition = 0
+        leftCrest.name = "leftCrest"
+        addChild(leftCrest)
+
+        let centerCrestPath = CGMutablePath()
+        centerCrestPath.move(to: CGPoint(x: -1, y: 15))
+        centerCrestPath.addQuadCurve(to: CGPoint(x: 5, y: 22), control: CGPoint(x: 4, y: 21))
+        centerCrestPath.addLine(to: CGPoint(x: 5, y: 14))
+        centerCrestPath.closeSubpath()
+
+        let centerCrest = SKShapeNode(path: centerCrestPath)
+        centerCrest.strokeColor = .clear
+        centerCrest.zPosition = 0
+        centerCrest.name = "centerCrest"
+        addChild(centerCrest)
+
         let tailPath = CGMutablePath()
-        tailPath.move(to: CGPoint(x: -14, y: 2))
-        tailPath.addLine(to: CGPoint(x: -24, y: 8))
-        tailPath.addLine(to: CGPoint(x: -23, y: -1))
+        tailPath.move(to: CGPoint(x: 13, y: 2))
+        tailPath.addQuadCurve(to: CGPoint(x: 25, y: 10), control: CGPoint(x: 23, y: 12))
+        tailPath.addQuadCurve(to: CGPoint(x: 25, y: -6), control: CGPoint(x: 28, y: 0))
         tailPath.closeSubpath()
 
         let tail = SKShapeNode(path: tailPath)
@@ -57,39 +81,46 @@ final class BirdCreatureNode: CreatureNode {
         tail.name = "tail"
         addChild(tail)
 
-        let body = SKShapeNode(ellipseOf: CGSize(width: 24, height: 18))
+        let body = SKShapeNode(ellipseOf: CGSize(width: 26, height: 20))
         body.strokeColor = NSColor(white: 1.0, alpha: 0.24)
         body.lineWidth = 1
-        body.position = CGPoint(x: -1, y: 1)
+        body.position = CGPoint(x: 0, y: 0)
         body.zPosition = 0
         body.name = "body"
         addChild(body)
 
-        let head = SKShapeNode(circleOfRadius: 6)
+        let belly = SKShapeNode(ellipseOf: CGSize(width: 18, height: 15))
+        belly.strokeColor = .clear
+        belly.position = CGPoint(x: -1, y: -3)
+        belly.zPosition = 1
+        belly.name = "belly"
+        addChild(belly)
+
+        let head = SKShapeNode(circleOfRadius: 7)
         head.strokeColor = NSColor(white: 1.0, alpha: 0.18)
         head.lineWidth = 0.8
-        head.position = CGPoint(x: 9, y: 6)
+        head.position = CGPoint(x: -6, y: 11)
         head.zPosition = 1
         head.name = "head"
         addChild(head)
 
         let wingContainer = SKNode()
-        wingContainer.position = CGPoint(x: -4, y: 1)
+        wingContainer.position = CGPoint(x: 4, y: 1)
         wingContainer.zRotation = wingRestAngle
         wingContainer.zPosition = 2
         wingContainer.name = "wingContainer"
         addChild(wingContainer)
 
-        let wing = SKShapeNode(ellipseOf: CGSize(width: 14, height: 9))
+        let wing = SKShapeNode(ellipseOf: CGSize(width: 18, height: 12))
         wing.strokeColor = .clear
         wing.position = CGPoint(x: 0, y: 0)
         wing.name = "wing"
         wingContainer.addChild(wing)
 
         let beakPath = CGMutablePath()
-        beakPath.move(to: CGPoint(x: 14, y: 7))
-        beakPath.addLine(to: CGPoint(x: 20, y: 9))
-        beakPath.addLine(to: CGPoint(x: 19, y: 5))
+        beakPath.move(to: CGPoint(x: -12, y: 11))
+        beakPath.addLine(to: CGPoint(x: -20, y: 14))
+        beakPath.addLine(to: CGPoint(x: -12, y: 17))
         beakPath.closeSubpath()
 
         let beak = SKShapeNode(path: beakPath)
@@ -102,26 +133,44 @@ final class BirdCreatureNode: CreatureNode {
         let eye = SKShapeNode(circleOfRadius: 1.8)
         eye.fillColor = .white
         eye.strokeColor = .clear
-        eye.position = CGPoint(x: 10, y: 7)
+        eye.position = CGPoint(x: -8, y: 13)
         eye.zPosition = 3
         addChild(eye)
 
         let pupil = SKShapeNode(circleOfRadius: 0.85)
         pupil.fillColor = NSColor(white: 0.05, alpha: 1.0)
         pupil.strokeColor = .clear
-        pupil.position = CGPoint(x: 10.6, y: 7)
+        pupil.position = CGPoint(x: -8.5, y: 13)
         pupil.zPosition = 4
         addChild(pupil)
 
+        let leftCheek = SKShapeNode(circleOfRadius: 3.8)
+        leftCheek.strokeColor = .clear
+        leftCheek.position = CGPoint(x: -13, y: 8)
+        leftCheek.zPosition = 2
+        leftCheek.name = "leftCheek"
+        addChild(leftCheek)
+
+        let rightCheek = SKShapeNode(circleOfRadius: 3.8)
+        rightCheek.strokeColor = .clear
+        rightCheek.position = CGPoint(x: -1, y: 8)
+        rightCheek.zPosition = 2
+        rightCheek.name = "rightCheek"
+        addChild(rightCheek)
+
         let legsPath = CGMutablePath()
-        legsPath.move(to: CGPoint(x: -1, y: -7))
-        legsPath.addLine(to: CGPoint(x: -1, y: -13))
-        legsPath.move(to: CGPoint(x: 3, y: -7))
-        legsPath.addLine(to: CGPoint(x: 3, y: -13))
-        legsPath.move(to: CGPoint(x: -3, y: -13))
-        legsPath.addLine(to: CGPoint(x: 1, y: -13))
-        legsPath.move(to: CGPoint(x: 1, y: -13))
-        legsPath.addLine(to: CGPoint(x: 5, y: -13))
+        legsPath.move(to: CGPoint(x: 0, y: -8))
+        legsPath.addLine(to: CGPoint(x: 0, y: -14))
+        legsPath.move(to: CGPoint(x: 6, y: -8))
+        legsPath.addLine(to: CGPoint(x: 6, y: -14))
+        legsPath.move(to: CGPoint(x: -3, y: -14))
+        legsPath.addLine(to: CGPoint(x: 1, y: -14))
+        legsPath.move(to: CGPoint(x: 1, y: -14))
+        legsPath.addLine(to: CGPoint(x: 5, y: -12))
+        legsPath.move(to: CGPoint(x: 3, y: -14))
+        legsPath.addLine(to: CGPoint(x: 7, y: -14))
+        legsPath.move(to: CGPoint(x: 7, y: -14))
+        legsPath.addLine(to: CGPoint(x: 11, y: -12))
 
         let legs = SKShapeNode(path: legsPath)
         legs.strokeColor = NSColor(calibratedRed: 0.82, green: 0.58, blue: 0.18, alpha: 0.9)
@@ -136,48 +185,40 @@ final class BirdCreatureNode: CreatureNode {
         super.updateAppearance(creature)
 
         let bodyNode = childNode(withName: "body") as? SKShapeNode
+        let bellyNode = childNode(withName: "belly") as? SKShapeNode
         let headNode = childNode(withName: "head") as? SKShapeNode
         let wingNode = childNode(withName: "//wing") as? SKShapeNode
         let tailNode = childNode(withName: "tail") as? SKShapeNode
         let shadowNode = childNode(withName: "shadow") as? SKShapeNode
         let legsNode = childNode(withName: "legs") as? SKShapeNode
 
-        let mainColor: NSColor
-        let wingColor: NSColor
-        if !creature.isAlive {
-            mainColor = NSColor(white: 0.42, alpha: 0.65)
-            wingColor = NSColor(white: 0.34, alpha: 0.7)
-        } else {
-            var h: CGFloat = 0
-            var s: CGFloat = 0
-            var b: CGFloat = 0
-            var a: CGFloat = 0
-            baseColor.usingColorSpace(.sRGB)?.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-            let hungerFactor = 1.0 - creature.hunger * 0.45
-            mainColor = NSColor(
-                hue: h,
-                saturation: max(0.2, s * 0.9 * hungerFactor),
-                brightness: min(1.0, b * (0.72 + 0.3 * hungerFactor)),
-                alpha: 0.96
-            )
-            wingColor = mainColor.shadow(withLevel: 0.22) ?? mainColor
-        }
+        let leftCrestNode = childNode(withName: "leftCrest") as? SKShapeNode
+        let centerCrestNode = childNode(withName: "centerCrest") as? SKShapeNode
+        let leftCheekNode = childNode(withName: "leftCheek") as? SKShapeNode
+        let rightCheekNode = childNode(withName: "rightCheek") as? SKShapeNode
 
-        bodyNode?.fillColor = mainColor
-        headNode?.fillColor = mainColor
-        wingNode?.fillColor = wingColor
-        tailNode?.fillColor = wingColor.withAlphaComponent(0.88)
+        let palette = palette(for: creature)
+
+        bodyNode?.fillColor = palette.body
+        bellyNode?.fillColor = palette.belly
+        headNode?.fillColor = palette.body
+        wingNode?.fillColor = palette.wing
+        tailNode?.fillColor = palette.wingBright
+        leftCrestNode?.fillColor = palette.crestOuter
+        centerCrestNode?.fillColor = palette.crestInner
+        leftCheekNode?.fillColor = palette.cheek
+        rightCheekNode?.fillColor = palette.cheek
         legsNode?.alpha = creature.isAlive ? 0.9 : 0.45
         shadowNode?.alpha = creature.isAlive ? 0.16 + CGFloat((1.0 - creature.hunger) * 0.04) : 0.08
 
         let creatureScale = CGFloat(creature.size)
         let windowScale = windowScaleFactor()
         let finalScale = max(0.38, creatureScale * windowScale)
-        let appliedX = facingRight ? finalScale : -finalScale
+        let appliedX = facingRight ? -finalScale : finalScale
         xScale = appliedX
         yScale = finalScale
 
-        nameLabel.xScale = facingRight ? 1.0 / finalScale : -1.0 / finalScale
+        nameLabel.xScale = facingRight ? -1.0 / finalScale : 1.0 / finalScale
         nameLabel.yScale = 1.0 / finalScale
         nameShadow.xScale = nameLabel.xScale
         nameShadow.yScale = nameLabel.yScale
@@ -225,12 +266,13 @@ final class BirdCreatureNode: CreatureNode {
 
         let landing = randomPerch(in: scene.size)
         let points = [
-            CGPoint(x: min(scene.size.width - 28, position.x + 36), y: min(scene.size.height - 30, position.y + 52)),
-            CGPoint(x: scene.size.width * 0.4, y: scene.size.height * 0.76),
+            CGPoint(x: min(scene.size.width - 36, position.x + 60), y: min(scene.size.height - 28, position.y + 70)),
+            CGPoint(x: scene.size.width * 0.45, y: scene.size.height * 0.84),
+            CGPoint(x: scene.size.width * 0.72, y: scene.size.height * 0.7),
             landing
         ]
 
-        runFlight(through: points, lift: 28, baseDuration: 1.5, key: "swimming") { [weak self] in
+        runFlight(through: points, lift: 40, baseDuration: 2.0, key: "swimming") { [weak self] in
             self?.peckAndResume(in: scene.size)
         }
     }
@@ -273,9 +315,9 @@ final class BirdCreatureNode: CreatureNode {
         guard creatureState.isAlive else { return }
 
         let roll = Double.random(in: 0...1)
-        if roll < 0.58 + creatureState.happiness * 0.15 {
+        if roll < 0.82 + creatureState.happiness * 0.12 {
             perchBriefly(in: sceneSize)
-        } else if roll < 0.9 {
+        } else if roll < 0.97 {
             runHop(to: randomPerch(in: sceneSize), key: "swimming") { [weak self] in
                 self?.planNextMove(in: sceneSize)
             }
@@ -293,7 +335,7 @@ final class BirdCreatureNode: CreatureNode {
         let bob = SKAction.repeatForever(SKAction.sequence([bobUp, bobDown]))
         run(bob, withKey: "hovering")
 
-        let wait = SKAction.wait(forDuration: Double.random(in: 2.4...5.2))
+        let wait = SKAction.wait(forDuration: Double.random(in: 4.0...8.0))
         let resume = SKAction.run { [weak self] in
             self?.removeAction(forKey: "hovering")
             self?.planNextMove(in: sceneSize)
@@ -311,9 +353,9 @@ final class BirdCreatureNode: CreatureNode {
         removeAction(forKey: "hoverTimer")
 
         let distance = hypot(destination.x - position.x, destination.y - position.y)
-        let speed = max(65, 85 * CGFloat(AppSettings.shared.movementSpeed))
-        let duration = TimeInterval(distance / speed).clamped(to: 0.28...0.9)
-        let path = curvePath(to: destination, lift: min(28, 10 + distance * 0.08))
+        let speed = max(55, 72 * CGFloat(AppSettings.shared.movementSpeed))
+        let duration = TimeInterval(distance / speed).clamped(to: 0.32...1.0)
+        let path = curvePath(to: destination, lift: min(22, 8 + distance * 0.06))
 
         let hop = SKAction.follow(path, asOffset: false, orientToPath: false, duration: duration)
         hop.timingMode = .easeInEaseOut
@@ -346,7 +388,7 @@ final class BirdCreatureNode: CreatureNode {
             let segment = hypot(next.x - partial.previous.x, next.y - partial.previous.y)
             return (partial.total + segment, next)
         }.total
-        let speed = max(85, 120 * CGFloat(AppSettings.shared.movementSpeed))
+        let speed = max(90, 130 * CGFloat(AppSettings.shared.movementSpeed))
         let duration = max(baseDuration, TimeInterval(totalDistance / speed))
 
         let flight = SKAction.follow(path, asOffset: false, orientToPath: false, duration: duration)
@@ -453,10 +495,56 @@ final class BirdCreatureNode: CreatureNode {
         let currentArea = scene.size.width * scene.size.height
         return max(0.45, min(1.45, sqrt(currentArea / refArea)))
     }
+
+    private func palette(for creature: Creature) -> BirdPalette {
+        if !creature.isAlive {
+            return BirdPalette(
+                body: NSColor(white: 0.42, alpha: 0.65),
+                belly: NSColor(white: 0.54, alpha: 0.66),
+                wing: NSColor(white: 0.34, alpha: 0.7),
+                wingBright: NSColor(white: 0.46, alpha: 0.72),
+                crestOuter: NSColor(white: 0.34, alpha: 0.68),
+                crestInner: NSColor(white: 0.52, alpha: 0.68),
+                cheek: NSColor(white: 0.66, alpha: 0.4)
+            )
+        }
+
+        if creature.totalCommitsFed >= 1000 {
+            return BirdPalette(
+                body: NSColor(calibratedRed: 1.0, green: 0.94, blue: 0.73, alpha: 0.98),
+                belly: NSColor(calibratedRed: 0.98, green: 0.82, blue: 0.38, alpha: 0.98),
+                wing: NSColor(calibratedRed: 0.94, green: 0.72, blue: 0.22, alpha: 0.98),
+                wingBright: NSColor(calibratedRed: 1.0, green: 0.84, blue: 0.38, alpha: 0.98),
+                crestOuter: NSColor(calibratedRed: 0.94, green: 0.72, blue: 0.22, alpha: 0.98),
+                crestInner: NSColor(calibratedRed: 0.98, green: 0.82, blue: 0.38, alpha: 0.98),
+                cheek: NSColor(calibratedRed: 1.0, green: 0.81, blue: 0.68, alpha: 0.74)
+            )
+        }
+
+        return BirdPalette(
+            body: NSColor(calibratedRed: 1.0, green: 0.96, blue: 0.86, alpha: 0.98),
+            belly: NSColor(calibratedRed: 0.95, green: 0.77, blue: 0.42, alpha: 0.98),
+            wing: NSColor(calibratedRed: 0.42, green: 0.63, blue: 0.5, alpha: 0.98),
+            wingBright: NSColor(calibratedRed: 0.56, green: 0.73, blue: 0.54, alpha: 0.98),
+            crestOuter: NSColor(calibratedRed: 0.29, green: 0.54, blue: 0.4, alpha: 0.98),
+            crestInner: NSColor(calibratedRed: 0.95, green: 0.77, blue: 0.42, alpha: 0.98),
+            cheek: NSColor(calibratedRed: 1.0, green: 0.85, blue: 0.78, alpha: 0.7)
+        )
+    }
 }
 
 private extension TimeInterval {
     func clamped(to range: ClosedRange<TimeInterval>) -> TimeInterval {
         min(range.upperBound, max(range.lowerBound, self))
     }
+}
+
+private struct BirdPalette {
+    let body: NSColor
+    let belly: NSColor
+    let wing: NSColor
+    let wingBright: NSColor
+    let crestOuter: NSColor
+    let crestInner: NSColor
+    let cheek: NSColor
 }

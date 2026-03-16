@@ -48,6 +48,7 @@ class GameModeScene: SKScene {
     var onAddRepository: (() -> Void)?
     var onOpenSettings: (() -> Void)?
     var onHideWindow: (() -> Void)?
+    var onHideWindowForHour: (() -> Void)?
     var onResetSize: (() -> Void)?
 
     func addCreature(_ node: CreatureNode, for repoID: UUID) {
@@ -226,6 +227,12 @@ class GameModeScene: SKScene {
         commitsItem.target = menuHandler
         menu.addItem(commitsItem)
 
+        menu.addItem(NSMenuItem.separator())
+
+        let hideForHourItem = NSMenuItem(title: "Hide for 1 Hour", action: #selector(MenuActions.hideForHourAction), keyEquivalent: "")
+        hideForHourItem.target = menuHandler
+        menu.addItem(hideForHourItem)
+
         // Convert point for menu positioning
         let viewPoint = view.convert(point, from: nil)
         menu.popUp(positioning: nil, at: viewPoint, in: view)
@@ -253,6 +260,10 @@ class GameModeScene: SKScene {
         let hideItem = NSMenuItem(title: "Hide Window", action: #selector(MenuActions.hideAction), keyEquivalent: "")
         hideItem.target = menuHandler
         menu.addItem(hideItem)
+
+        let hideForHourItem = NSMenuItem(title: "Hide for 1 Hour", action: #selector(MenuActions.hideForHourAction), keyEquivalent: "")
+        hideForHourItem.target = menuHandler
+        menu.addItem(hideForHourItem)
 
         let viewPoint = view.convert(point, from: nil)
         menu.popUp(positioning: nil, at: viewPoint, in: view)
@@ -313,6 +324,10 @@ class MenuActions: NSObject {
 
     @objc func hideAction() {
         scene?.onHideWindow?()
+    }
+
+    @objc func hideForHourAction() {
+        scene?.onHideWindowForHour?()
     }
 }
 

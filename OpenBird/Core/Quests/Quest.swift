@@ -81,6 +81,22 @@ struct Quest: Codable, Identifiable {
             targetValue: 30,
             rewardDescription: "This is just who you are now"
         ),
+        Quest(
+            id: "golden_friend",
+            title: "Golden Friend",
+            description: "Reach 1,000 total commits",
+            requirement: .totalCommits,
+            targetValue: 1000,
+            rewardDescription: "Your bird unlocks its epic golden form"
+        ),
+        Quest(
+            id: "legendary_flock",
+            title: "Legendary Flock",
+            description: "Reach 10,000 total commits",
+            requirement: .totalCommits,
+            targetValue: 10000,
+            rewardDescription: "Your friend becomes a legend"
+        ),
     ]
 }
 

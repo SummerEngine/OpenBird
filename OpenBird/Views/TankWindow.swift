@@ -61,7 +61,7 @@ final class TankSKView: SKView {
     func refreshChrome() {
         wantsLayer = true
         layer?.cornerRadius = 8
-        layer?.masksToBounds = false
+        layer?.masksToBounds = true
 
         let keepVisible = AppSettings.shared.showWindowBorder || isHovering || isPressing
         guard keepVisible else {

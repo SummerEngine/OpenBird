@@ -268,7 +268,8 @@ struct SettingsView: View {
         if commits < 10 { return ("Sprout", 10) }
         if commits < 50 { return ("Buddy", 50) }
         if commits < 200 { return ("Companion", 200) }
-        if commits < 1000 { return ("Sage", 1000) }
+        if commits < 1000 { return ("Golden", 1000) }
+        if commits < 10000 { return ("Legend", 10000) }
         return (nil, nil)
     }
 
@@ -280,6 +281,7 @@ struct SettingsView: View {
         case 50: prevThreshold = 10
         case 200: prevThreshold = 50
         case 1000: prevThreshold = 200
+        case 10000: prevThreshold = 1000
         default: prevThreshold = 0
         }
         let progress = Double(commits - prevThreshold) / Double(threshold - prevThreshold)
@@ -359,7 +361,8 @@ struct SettingsView: View {
             evolutionStageRow("Sprout", "10-49 commits", "Growing nicely")
             evolutionStageRow("Buddy", "50-199 commits", "A real companion")
             evolutionStageRow("Companion", "200-999 commits", "You've been through a lot together")
-            evolutionStageRow("Sage", "1000+ commits", "A wise old friend")
+            evolutionStageRow("Golden", "1,000-9,999 commits", "An epic gold bird form")
+            evolutionStageRow("Legend", "10,000+ commits", "A legendary companion")
         }
     }
 

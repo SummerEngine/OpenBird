@@ -33,7 +33,8 @@ struct Creature: Codable {
         case 10..<50: return "Sprout"
         case 50..<200: return "Buddy"
         case 200..<1000: return "Companion"
-        default: return "Sage"
+        case 1000..<10000: return "Golden"
+        default: return "Legend"
         }
     }
 

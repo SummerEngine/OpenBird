@@ -116,7 +116,7 @@ struct AddRepositoryView: View {
                 }
                 errorMessage = nil
             } else {
-                errorMessage = "Not a git repository (no .git directory found)"
+                errorMessage = "Not a git repository or worktree"
                 selectedPath = ""
                 repoName = ""
             }
