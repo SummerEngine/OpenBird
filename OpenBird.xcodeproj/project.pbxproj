@@ -1,0 +1,502 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* OpenBirdApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* OpenBirdApp.swift */; };
+		A10000000000000000000002 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* Repository.swift */; };
+		A10000000000000000000003 /* Creature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* Creature.swift */; };
+		A10000000000000000000004 /* CommitRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* CommitRecord.swift */; };
+		A10000000000000000000005 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* AppSettings.swift */; };
+		A10000000000000000000006 /* GitMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* GitMonitorService.swift */; };
+		A10000000000000000000007 /* CreatureLifecycleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* CreatureLifecycleService.swift */; };
+		A10000000000000000000008 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* PersistenceService.swift */; };
+		A10000000000000000000009 /* HotkeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* HotkeyService.swift */; };
+		A1000000000000000000000A /* GameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000A /* GameMode.swift */; };
+		A1000000000000000000000B /* FishMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000B /* FishMode.swift */; };
+		A1000000000000000000000C /* FishScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000C /* FishScene.swift */; };
+		A1000000000000000000000D /* FishCreatureNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* FishCreatureNode.swift */; };
+		A1000000000000000000000E /* TankWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000E /* TankWindow.swift */; };
+		A1000000000000000000000F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000F /* SettingsView.swift */; };
+		A10000000000000000000010 /* RepositoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* RepositoryListView.swift */; };
+		A10000000000000000000011 /* AddRepositoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* AddRepositoryView.swift */; };
+		A10000000000000000000012 /* ActivityLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* ActivityLogView.swift */; };
+		A10000000000000000000013 /* GitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000013 /* GitHelper.swift */; };
+		A10000000000000000000014 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000014 /* Assets.xcassets */; };
+		A10000000000000000000015 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A20000000000000000000015 /* SpriteKit.framework */; };
+		B10000000000000000000001 /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* Quest.swift */; };
+		B10000000000000000000002 /* QuestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* QuestService.swift */; };
+		C10000000000000000000001 /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000002 /* ColorHelper.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* OpenBirdApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenBirdApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* Creature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Creature.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* CommitRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitRecord.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* GitMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitMonitorService.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* CreatureLifecycleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatureLifecycleService.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		A20000000000000000000009 /* HotkeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyService.swift; sourceTree = "<group>"; };
+		A2000000000000000000000A /* GameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMode.swift; sourceTree = "<group>"; };
+		A2000000000000000000000B /* FishMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishMode.swift; sourceTree = "<group>"; };
+		A2000000000000000000000C /* FishScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishScene.swift; sourceTree = "<group>"; };
+		A2000000000000000000000D /* FishCreatureNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishCreatureNode.swift; sourceTree = "<group>"; };
+		A2000000000000000000000E /* TankWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankWindow.swift; sourceTree = "<group>"; };
+		A2000000000000000000000F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A20000000000000000000010 /* RepositoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryListView.swift; sourceTree = "<group>"; };
+		A20000000000000000000011 /* AddRepositoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRepositoryView.swift; sourceTree = "<group>"; };
+		A20000000000000000000012 /* ActivityLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogView.swift; sourceTree = "<group>"; };
+		A20000000000000000000013 /* GitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHelper.swift; sourceTree = "<group>"; };
+		A20000000000000000000014 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000000000000000000015 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		A20000000000000000000016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20000000000000000000017 /* OpenBird.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenBird.entitlements; sourceTree = "<group>"; };
+		A20000000000000000000018 /* OpenBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10000000000000000000003 /* Quest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quest.swift; sourceTree = "<group>"; };
+		B10000000000000000000004 /* QuestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestService.swift; sourceTree = "<group>"; };
+		C10000000000000000000002 /* ColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A30000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000015 /* SpriteKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A40000000000000000000001 /* = Begin MainGroup = */ = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000002 /* OpenBird */,
+				A40000000000000000000010 /* Frameworks */,
+				A40000000000000000000011 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A40000000000000000000011 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000018 /* OpenBird.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000010 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000015 /* SpriteKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000002 /* OpenBird */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000001 /* OpenBirdApp.swift */,
+				A40000000000000000000003 /* Core */,
+				A40000000000000000000007 /* GameModes */,
+				A40000000000000000000009 /* Views */,
+				A4000000000000000000000A /* Utilities */,
+				A20000000000000000000014 /* Assets.xcassets */,
+				A20000000000000000000016 /* Info.plist */,
+				A20000000000000000000017 /* OpenBird.entitlements */,
+			);
+			path = OpenBird;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000003 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000004 /* Models */,
+				A40000000000000000000005 /* Services */,
+				A40000000000000000000006 /* Protocols */,
+				B10000000000000000000005 /* Quests */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		B10000000000000000000005 /* Quests */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000003 /* Quest.swift */,
+				B10000000000000000000004 /* QuestService.swift */,
+			);
+			path = Quests;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000002 /* Repository.swift */,
+				A20000000000000000000003 /* Creature.swift */,
+				A20000000000000000000004 /* CommitRecord.swift */,
+				A20000000000000000000005 /* AppSettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000005 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000006 /* GitMonitorService.swift */,
+				A20000000000000000000007 /* CreatureLifecycleService.swift */,
+				A20000000000000000000008 /* PersistenceService.swift */,
+				A20000000000000000000009 /* HotkeyService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000006 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000A /* GameMode.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000007 /* GameModes */ = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000008 /* Fish */,
+			);
+			path = GameModes;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000008 /* Fish */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000B /* FishMode.swift */,
+				A2000000000000000000000C /* FishScene.swift */,
+				A2000000000000000000000D /* FishCreatureNode.swift */,
+			);
+			path = Fish;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000009 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000E /* TankWindow.swift */,
+				A2000000000000000000000F /* SettingsView.swift */,
+				A20000000000000000000010 /* RepositoryListView.swift */,
+				A20000000000000000000011 /* AddRepositoryView.swift */,
+				A20000000000000000000012 /* ActivityLogView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000A /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000013 /* GitHelper.swift */,
+				C10000000000000000000002 /* ColorHelper.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A50000000000000000000001 /* OpenBird */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A70000000000000000000003 /* Build configuration list for PBXNativeTarget "OpenBird" */;
+			buildPhases = (
+				A60000000000000000000001 /* Sources */,
+				A30000000000000000000001 /* Frameworks */,
+				A60000000000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenBird;
+			productName = OpenBird;
+			productReference = A20000000000000000000018 /* OpenBird.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A50000000000000000000002 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A50000000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A70000000000000000000001 /* Build configuration list for PBXProject "OpenBird" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A40000000000000000000001 /* = Begin MainGroup = */;
+			productRefGroup = A40000000000000000000011 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A50000000000000000000001 /* OpenBird */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A60000000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000014 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A60000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* OpenBirdApp.swift in Sources */,
+				A10000000000000000000002 /* Repository.swift in Sources */,
+				A10000000000000000000003 /* Creature.swift in Sources */,
+				A10000000000000000000004 /* CommitRecord.swift in Sources */,
+				A10000000000000000000005 /* AppSettings.swift in Sources */,
+				A10000000000000000000006 /* GitMonitorService.swift in Sources */,
+				A10000000000000000000007 /* CreatureLifecycleService.swift in Sources */,
+				A10000000000000000000008 /* PersistenceService.swift in Sources */,
+				A10000000000000000000009 /* HotkeyService.swift in Sources */,
+				A1000000000000000000000A /* GameMode.swift in Sources */,
+				A1000000000000000000000B /* FishMode.swift in Sources */,
+				A1000000000000000000000C /* FishScene.swift in Sources */,
+				A1000000000000000000000D /* FishCreatureNode.swift in Sources */,
+				A1000000000000000000000E /* TankWindow.swift in Sources */,
+				A1000000000000000000000F /* SettingsView.swift in Sources */,
+				A10000000000000000000010 /* RepositoryListView.swift in Sources */,
+				A10000000000000000000011 /* AddRepositoryView.swift in Sources */,
+				A10000000000000000000012 /* ActivityLogView.swift in Sources */,
+				A10000000000000000000013 /* GitHelper.swift in Sources */,
+				B10000000000000000000001 /* Quest.swift in Sources */,
+				B10000000000000000000002 /* QuestService.swift in Sources */,
+				C10000000000000000000001 /* ColorHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A70000000000000000000004 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A70000000000000000000005 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A70000000000000000000006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OpenBird/OpenBird.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FXK7AXT3WH;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OpenBird/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = "";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openbird.app;
+				PRODUCT_NAME = OpenBird;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A70000000000000000000007 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OpenBird/OpenBird.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FXK7AXT3WH;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OpenBird/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = "";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openbird.app;
+				PRODUCT_NAME = OpenBird;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A70000000000000000000001 /* Build configuration list for PBXProject "OpenBird" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000004 /* Debug */,
+				A70000000000000000000005 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A70000000000000000000003 /* Build configuration list for PBXNativeTarget "OpenBird" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000006 /* Debug */,
+				A70000000000000000000007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A50000000000000000000002 /* Project object */;
+}
