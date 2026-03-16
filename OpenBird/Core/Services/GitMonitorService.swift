@@ -66,21 +66,25 @@ final class GitMonitorService: ObservableObject {
     }
 
     func checkForNewCommit(repoID: UUID, path: String) {
-        guard var repo = repositories.first(where: { $0.id == repoID }) else { return }
+        guard let repo = repositories.first(where: { $0.id == repoID }) else { return }
 
         let repoPath = path
-        Task.detached { [weak self] in
+        let lastKnownCommitHash = repo.lastKnownCommitHash
+
+        Task.detached { [repoID, repoPath, lastKnownCommitHash] in
             guard let commitInfo = GitHelper.latestCommit(at: repoPath) else { return }
+            guard commitInfo.hash != lastKnownCommitHash else { return }
 
             await MainActor.run {
-                guard let self = self else { return }
-                guard commitInfo.hash != repo.lastKnownCommitHash else { return }
+                let service = GitMonitorService.shared
+                guard var updatedRepo = service.repositories.first(where: { $0.id == repoID }) else { return }
+                guard commitInfo.hash != updatedRepo.lastKnownCommitHash else { return }
 
-                repo.lastKnownCommitHash = commitInfo.hash
-                repo.lastCommitDate = commitInfo.date
+                updatedRepo.lastKnownCommitHash = commitInfo.hash
+                updatedRepo.lastCommitDate = commitInfo.date
 
-                if let idx = self.repositories.firstIndex(where: { $0.id == repoID }) {
-                    self.repositories[idx] = repo
+                if let idx = service.repositories.firstIndex(where: { $0.id == repoID }) {
+                    service.repositories[idx] = updatedRepo
                 }
 
                 let record = CommitRecord(
@@ -91,9 +95,9 @@ final class GitMonitorService: ObservableObject {
                     date: commitInfo.date
                 )
 
-                self.latestCommit = (repo: repo, commit: record)
+                service.latestCommit = (repo: updatedRepo, commit: record)
                 PersistenceService.shared.appendCommit(record)
-                PersistenceService.shared.saveRepositories(self.repositories)
+                PersistenceService.shared.saveRepositories(service.repositories)
                 CreatureLifecycleService.shared.feedCreature(repoID: repoID, commit: record)
             }
         }

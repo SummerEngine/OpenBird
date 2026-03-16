@@ -203,17 +203,10 @@ final class SystemAudioMonitorService: NSObject, ObservableObject {
 
             try await stream.startCapture()
 
-            DispatchQueue.main.async {
-                self.permissionState = .granted
-                self.isCapturing = true
-                self.captureErrorMessage = nil
-            }
+            await Self.markCaptureStarted()
         } catch {
             self.stream = nil
-            DispatchQueue.main.async {
-                self.isCapturing = false
-                self.captureErrorMessage = error.localizedDescription
-            }
+            await Self.markCaptureFailed(error.localizedDescription)
         }
     }
 
@@ -328,6 +321,19 @@ final class SystemAudioMonitorService: NSObject, ObservableObject {
 
         let rms = sqrt(sum / Float(clampedCount))
         return pow(min(1.0, rms * 9.0), 0.6)
+    }
+
+    @MainActor
+    private static func markCaptureStarted() {
+        shared.permissionState = .granted
+        shared.isCapturing = true
+        shared.captureErrorMessage = nil
+    }
+
+    @MainActor
+    private static func markCaptureFailed(_ message: String) {
+        shared.isCapturing = false
+        shared.captureErrorMessage = message
     }
 }
 

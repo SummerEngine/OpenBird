@@ -31,7 +31,7 @@ final class HotkeyService: ObservableObject {
         guard status == noErr else { return }
 
         // Register the hotkey
-        var hotKeyID = EventHotKeyID(signature: OSType(0x574F5243), id: 1) // "WORC"
+        let hotKeyID = EventHotKeyID(signature: OSType(0x574F5243), id: 1) // "WORC"
         RegisterEventHotKey(
             settings.hotkeyKeyCode,
             settings.hotkeyModifiers,
