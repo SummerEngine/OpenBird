@@ -352,34 +352,55 @@ final class FishCreatureNode: CreatureNode {
         zRotation = 0
 
         let wiggle = SKAction.sequence([
-            SKAction.rotate(byAngle: 0.14, duration: 0.05),
-            SKAction.rotate(byAngle: -0.28, duration: 0.1),
-            SKAction.rotate(byAngle: 0.28, duration: 0.1),
-            SKAction.rotate(byAngle: -0.14, duration: 0.05),
+            SKAction.rotate(byAngle: 0.08, duration: 0.06),
+            SKAction.rotate(byAngle: -0.16, duration: 0.09),
+            SKAction.rotate(byAngle: 0.18, duration: 0.1),
+            SKAction.rotate(byAngle: -0.1, duration: 0.06),
         ])
 
         let currentXScale = xScale
         let currentYScale = yScale
         let pulse = SKAction.sequence([
-            SKAction.scaleX(to: currentXScale * 1.08, y: currentYScale * 1.12, duration: 0.12),
+            SKAction.scaleX(to: currentXScale * 0.94, y: currentYScale * 1.14, duration: 0.1),
+            SKAction.scaleX(to: currentXScale * 1.08, y: currentYScale * 0.94, duration: 0.12),
             SKAction.scaleX(to: currentXScale, y: currentYScale, duration: 0.12),
+        ])
+
+        let bounce = SKAction.sequence([
+            SKAction.moveBy(x: 0, y: 7, duration: 0.12),
+            SKAction.moveBy(x: 0, y: -7, duration: 0.18)
         ])
 
         let bodyNode = childNode(withName: "body") as? SKShapeNode
         let tailNode = childNode(withName: "tail") as? SKShapeNode
+        let dorsalFinNode = childNode(withName: "dorsalFin") as? SKShapeNode
+        let bellyFinNode = childNode(withName: "bellyFin") as? SKShapeNode
+        let glowNode = childNode(withName: "glow") as? SKShapeNode
         let originalColor = bodyNode?.fillColor ?? baseColor
         let originalTailColor = tailNode?.fillColor ?? baseColor
+        let originalDorsalColor = dorsalFinNode?.fillColor ?? baseColor
+        let originalBellyColor = bellyFinNode?.fillColor ?? baseColor
+        let originalGlowAlpha = glowNode?.alpha ?? 0.2
+        let celebratoryColor = originalColor.blended(withFraction: 0.18, of: NSColor(calibratedRed: 1.0, green: 0.88, blue: 0.5, alpha: 1.0)) ?? originalColor
         let flash = SKAction.run {
-            bodyNode?.fillColor = NSColor(calibratedRed: 0.34, green: 0.93, blue: 0.55, alpha: 1.0)
-            tailNode?.fillColor = NSColor(calibratedRed: 0.34, green: 0.93, blue: 0.55, alpha: 0.78)
+            bodyNode?.fillColor = celebratoryColor
+            tailNode?.fillColor = celebratoryColor.withAlphaComponent(0.82)
+            dorsalFinNode?.fillColor = celebratoryColor.withAlphaComponent(0.72)
+            bellyFinNode?.fillColor = celebratoryColor.withAlphaComponent(0.64)
+            glowNode?.alpha = max(originalGlowAlpha, 0.34)
+            glowNode?.glowWidth = 8
         }
         let restore = SKAction.run {
             bodyNode?.fillColor = originalColor
             tailNode?.fillColor = originalTailColor
+            dorsalFinNode?.fillColor = originalDorsalColor
+            bellyFinNode?.fillColor = originalBellyColor
+            glowNode?.alpha = originalGlowAlpha
+            glowNode?.glowWidth = 0
         }
-        let colorFlash = SKAction.sequence([flash, SKAction.wait(forDuration: 0.25), restore])
+        let colorFlash = SKAction.sequence([flash, SKAction.wait(forDuration: 0.24), restore])
 
-        run(SKAction.group([wiggle, pulse, colorFlash])) { [weak self] in
+        run(SKAction.group([wiggle, pulse, bounce, colorFlash])) { [weak self] in
             guard let self = self, let scene = self.scene else { return }
             self.swimToRandomPoint(in: scene.size)
         }

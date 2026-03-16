@@ -79,29 +79,53 @@ final class BirdScene: GameModeScene {
         tree.name = "tree"
         tree.zPosition = -4
 
-        let trunkWidth = max(24, size.width * 0.075)
+        let trunkWidth = max(22, size.width * 0.058)
         let trunkHeight = max(120, size.height * 0.8)
         let trunkX = max(30, size.width * 0.16)
-        let trunk = SKShapeNode(rectOf: CGSize(width: trunkWidth, height: trunkHeight), cornerRadius: trunkWidth / 2)
+        let trunkPath = CGMutablePath()
+        let trunkBottom = CGPoint(x: trunkX, y: 0)
+        let trunkTopY = trunkHeight - 8
+        trunkPath.move(to: CGPoint(x: trunkBottom.x - trunkWidth * 0.55, y: trunkBottom.y))
+        trunkPath.addLine(to: CGPoint(x: trunkBottom.x - trunkWidth * 0.48, y: trunkTopY * 0.78))
+        trunkPath.addQuadCurve(
+            to: CGPoint(x: trunkX - trunkWidth * 0.2, y: trunkTopY),
+            control: CGPoint(x: trunkX - trunkWidth * 0.62, y: trunkTopY * 0.96)
+        )
+        trunkPath.addLine(to: CGPoint(x: trunkX + trunkWidth * 0.22, y: trunkTopY))
+        trunkPath.addQuadCurve(
+            to: CGPoint(x: trunkBottom.x + trunkWidth * 0.52, y: trunkTopY * 0.76),
+            control: CGPoint(x: trunkX + trunkWidth * 0.68, y: trunkTopY * 0.95)
+        )
+        trunkPath.addLine(to: CGPoint(x: trunkBottom.x + trunkWidth * 0.6, y: trunkBottom.y))
+        trunkPath.closeSubpath()
+
+        let trunk = SKShapeNode(path: trunkPath)
         trunk.fillColor = style == "night"
-            ? NSColor(calibratedRed: 0.24, green: 0.16, blue: 0.12, alpha: 0.72)
-            : NSColor(calibratedRed: 0.42, green: 0.28, blue: 0.18, alpha: 0.6)
-        trunk.strokeColor = .clear
-        trunk.position = CGPoint(x: trunkX, y: trunkHeight / 2 - 10)
+            ? NSColor(calibratedRed: 0.28, green: 0.2, blue: 0.15, alpha: 0.84)
+            : NSColor(calibratedRed: 0.46, green: 0.31, blue: 0.19, alpha: 0.82)
+        trunk.strokeColor = style == "night"
+            ? NSColor(calibratedRed: 0.38, green: 0.28, blue: 0.21, alpha: 0.35)
+            : NSColor(calibratedRed: 0.56, green: 0.38, blue: 0.24, alpha: 0.24)
+        trunk.lineWidth = 1.2
         tree.addChild(trunk)
 
         let canopyColor = style == "night"
-            ? NSColor(calibratedRed: 0.2, green: 0.34, blue: 0.24, alpha: 0.28)
-            : NSColor(calibratedRed: 0.42, green: 0.68, blue: 0.36, alpha: 0.24)
+            ? NSColor(calibratedRed: 0.28, green: 0.42, blue: 0.31, alpha: 0.36)
+            : NSColor(calibratedRed: 0.39, green: 0.63, blue: 0.34, alpha: 0.34)
+        let canopyHighlight = style == "night"
+            ? NSColor(calibratedRed: 0.42, green: 0.55, blue: 0.43, alpha: 0.12)
+            : NSColor(calibratedRed: 0.58, green: 0.78, blue: 0.52, alpha: 0.16)
         let canopyCenters = [
-            CGPoint(x: trunkX + size.width * 0.14, y: size.height * 0.78),
-            CGPoint(x: trunkX + size.width * 0.03, y: size.height * 0.66),
-            CGPoint(x: trunkX + size.width * 0.2, y: size.height * 0.58)
+            CGPoint(x: trunkX + size.width * 0.12, y: size.height * 0.82),
+            CGPoint(x: trunkX + size.width * 0.03, y: size.height * 0.73),
+            CGPoint(x: trunkX + size.width * 0.19, y: size.height * 0.69),
+            CGPoint(x: trunkX + size.width * 0.1, y: size.height * 0.63)
         ]
         let canopySizes = [
-            CGSize(width: size.width * 0.36, height: size.height * 0.28),
-            CGSize(width: size.width * 0.24, height: size.height * 0.2),
-            CGSize(width: size.width * 0.26, height: size.height * 0.2)
+            CGSize(width: size.width * 0.22, height: size.height * 0.17),
+            CGSize(width: size.width * 0.14, height: size.height * 0.11),
+            CGSize(width: size.width * 0.15, height: size.height * 0.12),
+            CGSize(width: size.width * 0.12, height: size.height * 0.1)
         ]
         for (center, canopySize) in zip(canopyCenters, canopySizes) {
             let canopy = SKShapeNode(ellipseOf: canopySize)
@@ -110,25 +134,32 @@ final class BirdScene: GameModeScene {
             canopy.position = center
             canopy.zPosition = -5
             tree.addChild(canopy)
+
+            let highlight = SKShapeNode(ellipseOf: CGSize(width: canopySize.width * 0.54, height: canopySize.height * 0.4))
+            highlight.fillColor = canopyHighlight
+            highlight.strokeColor = .clear
+            highlight.position = CGPoint(x: center.x - canopySize.width * 0.1, y: center.y + canopySize.height * 0.12)
+            highlight.zPosition = -4.9
+            tree.addChild(highlight)
         }
 
         let branchColor = style == "night"
-            ? NSColor(calibratedRed: 0.36, green: 0.26, blue: 0.22, alpha: 0.56)
-            : NSColor(calibratedRed: 0.45, green: 0.31, blue: 0.18, alpha: 0.46)
+            ? NSColor(calibratedRed: 0.46, green: 0.34, blue: 0.24, alpha: 0.72)
+            : NSColor(calibratedRed: 0.55, green: 0.38, blue: 0.22, alpha: 0.68)
         let branchSpecs: [(start: CGPoint, end: CGPoint, width: CGFloat)] = [
             (
-                CGPoint(x: trunkX + trunkWidth * 0.2, y: size.height * 0.72),
+                CGPoint(x: trunkX + trunkWidth * 0.1, y: size.height * 0.72),
                 CGPoint(x: size.width * 0.58, y: size.height * 0.72),
+                7
+            ),
+            (
+                CGPoint(x: trunkX + trunkWidth * 0.05, y: size.height * 0.51),
+                CGPoint(x: size.width * 0.49, y: size.height * 0.51),
                 6
             ),
             (
-                CGPoint(x: trunkX - trunkWidth * 0.1, y: size.height * 0.5),
-                CGPoint(x: size.width * 0.68, y: size.height * 0.52),
-                5
-            ),
-            (
-                CGPoint(x: trunkX + trunkWidth * 0.2, y: size.height * 0.31),
-                CGPoint(x: size.width * 0.5, y: size.height * 0.3),
+                CGPoint(x: trunkX + trunkWidth * 0.05, y: size.height * 0.3),
+                CGPoint(x: size.width * 0.41, y: size.height * 0.3),
                 5
             )
         ]
@@ -159,41 +190,9 @@ final class BirdScene: GameModeScene {
     override func triggerFeedAnimation(for repoID: UUID, commit: CommitRecord) {
         guard let creature = creatures[repoID] else { return }
 
-        let burst = SKShapeNode(circleOfRadius: 12)
-        burst.fillColor = NSColor(calibratedRed: 1.0, green: 0.9, blue: 0.48, alpha: 0.3)
-        burst.strokeColor = NSColor(calibratedRed: 1.0, green: 0.94, blue: 0.72, alpha: 0.65)
-        burst.lineWidth = 1.5
-        burst.position = creature.position
-        burst.zPosition = 8
-        addChild(burst)
-        burst.run(SKAction.sequence([
-            SKAction.group([
-                SKAction.scale(to: 3.2, duration: 0.45),
-                SKAction.fadeOut(withDuration: 0.45)
-            ]),
-            .removeFromParent()
-        ]))
-
-        creature.playFeedAnimation()
-
-        let label = SKLabelNode(text: "Commit: \(String(commit.message.prefix(36)))")
-        label.fontSize = 10
-        label.fontColor = NSColor(white: 1.0, alpha: 0.96)
-        label.fontName = "Menlo-Bold"
-        label.horizontalAlignmentMode = .center
-        label.position = CGPoint(x: creature.position.x, y: creature.position.y + 34)
-        label.alpha = 0
-        label.zPosition = 9
-        addChild(label)
-        label.run(SKAction.sequence([
-            SKAction.group([
-                SKAction.fadeIn(withDuration: 0.18),
-                SKAction.moveBy(x: 0, y: 10, duration: 0.18)
-            ]),
-            SKAction.wait(forDuration: 2.2),
-            SKAction.fadeOut(withDuration: 0.45),
-            .removeFromParent()
-        ]))
+        creature.playCommitAnimation()
+        spawnCommitReward(at: creature.position)
+        showCommitLabel(for: commit, at: creature.position, prefix: "Commit!")
     }
 
     override func updateAmbientEffects() {

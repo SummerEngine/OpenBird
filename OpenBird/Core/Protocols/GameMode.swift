@@ -95,23 +95,9 @@ class GameModeScene: SKScene {
         let fadeOut = SKAction.fadeOut(withDuration: 0.2)
         food.run(SKAction.sequence([fall, fadeOut, .removeFromParent()]))
 
-        // Creature reacts
-        creature.playFeedAnimation()
-
-        // Show commit message briefly
-        let label = SKLabelNode(text: String(commit.message.prefix(40)))
-        label.fontSize = 10
-        label.fontColor = .white
-        label.fontName = "Menlo"
-        label.position = CGPoint(x: creature.position.x, y: creature.position.y + 30)
-        label.alpha = 0
-        addChild(label)
-        label.run(SKAction.sequence([
-            SKAction.fadeIn(withDuration: 0.2),
-            SKAction.wait(forDuration: 2.0),
-            SKAction.fadeOut(withDuration: 0.5),
-            .removeFromParent()
-        ]))
+        creature.playCommitAnimation()
+        spawnCommitReward(at: creature.position)
+        showCommitLabel(for: commit, at: creature.position, prefix: "Commit!")
     }
 
     func updateCreatureState(_ repoID: UUID, creature: Creature) {
@@ -121,6 +107,89 @@ class GameModeScene: SKScene {
     func updateAmbientEffects() {}
 
     func updateBackground() {}
+
+    func spawnCommitReward(at point: CGPoint) {
+        let rewardNode = SKNode()
+        rewardNode.position = point
+        rewardNode.zPosition = 8
+        addChild(rewardNode)
+
+        let glow = SKShapeNode(circleOfRadius: 12)
+        glow.fillColor = NSColor(calibratedRed: 1.0, green: 0.87, blue: 0.34, alpha: 0.28)
+        glow.strokeColor = .clear
+        rewardNode.addChild(glow)
+        glow.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: 3.8, duration: 0.42),
+                SKAction.fadeOut(withDuration: 0.42)
+            ]),
+            .removeFromParent()
+        ]))
+
+        let ring = SKShapeNode(circleOfRadius: 14)
+        ring.fillColor = .clear
+        ring.strokeColor = NSColor(calibratedRed: 1.0, green: 0.95, blue: 0.72, alpha: 0.9)
+        ring.lineWidth = 1.8
+        rewardNode.addChild(ring)
+        ring.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: 2.35, duration: 0.38),
+                SKAction.fadeOut(withDuration: 0.38)
+            ]),
+            .removeFromParent()
+        ]))
+
+        let sparkleAngles = stride(from: 0.0, to: Double.pi * 2, by: Double.pi / 3).map { CGFloat($0) }
+        for (index, angle) in sparkleAngles.enumerated() {
+            let sparkle = SKShapeNode(rectOf: CGSize(width: 3, height: 14), cornerRadius: 1.5)
+            sparkle.fillColor = NSColor(calibratedRed: 1.0, green: 0.95, blue: 0.7, alpha: 0.96)
+            sparkle.strokeColor = .clear
+            sparkle.zRotation = angle
+            rewardNode.addChild(sparkle)
+
+            let dx = cos(angle) * 18
+            let dy = sin(angle) * 18 + 4
+            sparkle.run(SKAction.sequence([
+                SKAction.wait(forDuration: Double(index) * 0.015),
+                SKAction.group([
+                    SKAction.moveBy(x: dx, y: dy, duration: 0.3),
+                    SKAction.scaleY(to: 0.15, duration: 0.3),
+                    SKAction.fadeOut(withDuration: 0.3)
+                ]),
+                .removeFromParent()
+            ]))
+        }
+
+        rewardNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.5),
+            .removeFromParent()
+        ]))
+    }
+
+    func showCommitLabel(for commit: CommitRecord, at point: CGPoint, prefix: String) {
+        let label = SKLabelNode(text: "\(prefix) \(String(commit.message.prefix(34)))")
+        label.fontSize = 10
+        label.fontColor = NSColor(calibratedRed: 1.0, green: 0.96, blue: 0.82, alpha: 0.98)
+        label.fontName = "Menlo-Bold"
+        label.horizontalAlignmentMode = .center
+        label.position = CGPoint(x: point.x, y: point.y + 32)
+        label.alpha = 0
+        label.zPosition = 9
+        addChild(label)
+        label.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.fadeIn(withDuration: 0.16),
+                SKAction.moveBy(x: 0, y: 10, duration: 0.16),
+                SKAction.scale(to: 1.08, duration: 0.16)
+            ]),
+            SKAction.wait(forDuration: 2.0),
+            SKAction.group([
+                SKAction.fadeOut(withDuration: 0.42),
+                SKAction.moveBy(x: 0, y: 6, duration: 0.42)
+            ]),
+            .removeFromParent()
+        ]))
+    }
 
     func setJamModeActive(_ active: Bool) {
         guard active != isJamModeActive else { return }
@@ -383,6 +452,9 @@ class CreatureNode: SKSpriteNode {
 
     func startIdleBehavior(in sceneSize: CGSize) {}
     func playFeedAnimation() {}
+    func playCommitAnimation() {
+        playFeedAnimation()
+    }
     func beginJamMode() {}
     func endJamMode(resumeIn sceneSize: CGSize) {
         startIdleBehavior(in: sceneSize)
