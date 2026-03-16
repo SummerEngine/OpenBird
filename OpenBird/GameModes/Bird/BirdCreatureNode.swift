@@ -44,7 +44,7 @@ final class BirdCreatureNode: CreatureNode {
         shadow.name = "shadow"
         addChild(shadow)
 
-        let body = SKShapeNode(circleOfRadius: 12)
+        let body = SKShapeNode(ellipseOf: CGSize(width: 24, height: 22))
         body.strokeColor = NSColor(white: 1.0, alpha: 0.24)
         body.lineWidth = 1
         body.position = CGPoint(x: 0, y: 1)
@@ -52,44 +52,23 @@ final class BirdCreatureNode: CreatureNode {
         body.name = "body"
         addChild(body)
 
-        let belly = SKShapeNode(circleOfRadius: 7.5)
-        belly.fillColor = NSColor(calibratedRed: 0.98, green: 0.92, blue: 0.78, alpha: 0.95)
-        belly.strokeColor = .clear
-        belly.position = CGPoint(x: 3, y: -2)
-        belly.zPosition = 1
-        belly.name = "belly"
-        addChild(belly)
-
         let wingContainer = SKNode()
-        wingContainer.position = CGPoint(x: -2, y: 2)
+        wingContainer.position = CGPoint(x: -1, y: 1)
         wingContainer.zRotation = wingRestAngle
         wingContainer.zPosition = 2
         wingContainer.name = "wingContainer"
         addChild(wingContainer)
 
-        let wing = SKShapeNode(ellipseOf: CGSize(width: 16, height: 11))
+        let wing = SKShapeNode(ellipseOf: CGSize(width: 14, height: 10))
         wing.strokeColor = .clear
-        wing.position = CGPoint(x: -3, y: 0)
+        wing.position = CGPoint(x: -2, y: 0)
         wing.name = "wing"
         wingContainer.addChild(wing)
 
-        let tailPath = CGMutablePath()
-        tailPath.move(to: CGPoint(x: -11, y: 2))
-        tailPath.addLine(to: CGPoint(x: -19, y: 7))
-        tailPath.addLine(to: CGPoint(x: -17, y: -3))
-        tailPath.closeSubpath()
-
-        let tail = SKShapeNode(path: tailPath)
-        tail.strokeColor = .clear
-        tail.position = CGPoint(x: -2, y: 0)
-        tail.zPosition = -1
-        tail.name = "tail"
-        addChild(tail)
-
         let beakPath = CGMutablePath()
-        beakPath.move(to: CGPoint(x: 12, y: 2))
-        beakPath.addLine(to: CGPoint(x: 18, y: 5))
-        beakPath.addLine(to: CGPoint(x: 18, y: -1))
+        beakPath.move(to: CGPoint(x: 10, y: 2))
+        beakPath.addLine(to: CGPoint(x: 16, y: 4.5))
+        beakPath.addLine(to: CGPoint(x: 16, y: 0))
         beakPath.closeSubpath()
 
         let beak = SKShapeNode(path: beakPath)
@@ -99,31 +78,19 @@ final class BirdCreatureNode: CreatureNode {
         beak.name = "beak"
         addChild(beak)
 
-        let eye = SKShapeNode(circleOfRadius: 2)
+        let eye = SKShapeNode(circleOfRadius: 1.8)
         eye.fillColor = .white
         eye.strokeColor = .clear
-        eye.position = CGPoint(x: 7, y: 6)
+        eye.position = CGPoint(x: 6.5, y: 5)
         eye.zPosition = 3
         addChild(eye)
 
-        let pupil = SKShapeNode(circleOfRadius: 1)
+        let pupil = SKShapeNode(circleOfRadius: 0.85)
         pupil.fillColor = NSColor(white: 0.05, alpha: 1.0)
         pupil.strokeColor = .clear
-        pupil.position = CGPoint(x: 7.8, y: 6)
+        pupil.position = CGPoint(x: 7.2, y: 5)
         pupil.zPosition = 4
         addChild(pupil)
-
-        let feetPath = CGMutablePath()
-        feetPath.move(to: CGPoint(x: -2, y: -9))
-        feetPath.addLine(to: CGPoint(x: -2, y: -14))
-        feetPath.move(to: CGPoint(x: 4, y: -9))
-        feetPath.addLine(to: CGPoint(x: 4, y: -14))
-        let feet = SKShapeNode(path: feetPath)
-        feet.strokeColor = NSColor(calibratedRed: 0.78, green: 0.45, blue: 0.16, alpha: 0.9)
-        feet.lineWidth = 1.2
-        feet.zPosition = -2
-        feet.name = "feet"
-        addChild(feet)
     }
 
     override func updateAppearance(_ creature: Creature) {
@@ -131,7 +98,6 @@ final class BirdCreatureNode: CreatureNode {
 
         let bodyNode = childNode(withName: "body") as? SKShapeNode
         let wingNode = childNode(withName: "//wing") as? SKShapeNode
-        let tailNode = childNode(withName: "tail") as? SKShapeNode
         let shadowNode = childNode(withName: "shadow") as? SKShapeNode
 
         let mainColor: NSColor
@@ -157,7 +123,6 @@ final class BirdCreatureNode: CreatureNode {
 
         bodyNode?.fillColor = mainColor
         wingNode?.fillColor = wingColor
-        tailNode?.fillColor = wingColor.withAlphaComponent(0.88)
         shadowNode?.alpha = creature.isAlive ? 0.16 + CGFloat((1.0 - creature.hunger) * 0.04) : 0.08
 
         let creatureScale = CGFloat(creature.size)
